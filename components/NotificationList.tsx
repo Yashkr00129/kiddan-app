@@ -19,27 +19,27 @@ const notifications = [
 export default function NotificationList() {
 	return (
 		<View style={styles.container}>
-			<Text style={styles.heading}>Notifications</Text>
+			<View style={styles.header}>
+				<Text style={styles.heading}>Notifications</Text>
+				<Text style={styles.viewButton}>VIEW ALL</Text>
+			</View>
 			{notifications.map((notification, index) => (
-				<>
-					<View style={styles.notificationContainer}>
-						<View style={{ flex: 10 }}>
-							<Text style={styles.notificationText}>{notification.text}</Text>
-						</View>
-						<View style={{ flex: 2 }}>
-							<Image
-								source={{ uri: notification.href }}
-								style={{
-									width: 60,
-									height: 60,
-									borderRadius: 100,
-								}}
-							/>
-						</View>
+				<View style={styles.notificationContainer} key={index}>
+					<View style={{ flex: 10 }}>
+						<Text style={styles.notificationText}>{notification.text}</Text>
 					</View>
-				</>
+					<View style={{ flex: 2 }}>
+						<Image
+							source={{ uri: notification.href }}
+							style={{
+								width: 60,
+								height: 60,
+								borderRadius: 10,
+							}}
+						/>
+					</View>
+				</View>
 			))}
-			<Button color={"black"} title="View All" />
 		</View>
 	);
 }
@@ -49,11 +49,23 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		paddingBottom: 50,
 	},
+	header: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+	},
 	heading: {
 		fontSize: 20,
 		fontWeight: "bold",
 		paddingTop: 20,
 		paddingBottom: 10,
+	},
+	viewButton: {
+		fontSize: 12,
+		fontWeight: "bold",
+		paddingTop: 20,
+		paddingBottom: 10,
+		color: "#00308F",
 	},
 	notificationContainer: {
 		flexDirection: "row",
