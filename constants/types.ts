@@ -1,5 +1,5 @@
 type Topic = {
-	id: string;
+	id: number;
 	title: string;
 	image: string;
 };
@@ -10,4 +10,5 @@ type Article = {
 	image: string;
 	topic: string;
 	text: string;
+	featured: boolean;
 };

@@ -23,6 +23,7 @@ export default function Article() {
 				text: `New Delhi, India - Four months after losing its majority in parliament for the first time in a decade, Prime Minister Narendra Modi's Bharatiya Janata Party (BJP) secured a record third term in the northern state of Haryana and scored its best ever performance in Indian-administered Kashmir, marking a dramatic turnaround. The results of the two northern states' assembly elections announced on Tuesday also represent a significant setback for the opposition Congress party's bid to end the BJP's dominance over electoral politics in India since 2014, political analysts told Al Jazeera on Wednesday.`,
 				image:
 					"https://images.unsplash.com/photo-1697130383976-38f28c444292?q=80&w=2526&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+				featured: false,
 			});
 		};
 		fetchArticle();
