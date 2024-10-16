@@ -1,5 +1,5 @@
 type Topic = {
-	id: number;
+	_id: number;
 	title: string;
 	image: string;
 };

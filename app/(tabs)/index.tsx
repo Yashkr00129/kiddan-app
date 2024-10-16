@@ -3,41 +3,23 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FeaturedArticle from "@/components/FeaturedArticle";
 import Topic from "@/components/Topic";
 import NotificationList from "@/components/NotificationList";
-
-const topics: Topic[] = [
-	{
-		id: 1,
-		image:
-			"https://images.unsplash.com/photo-1508780709619-79562169bc64?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-		title: "Tech",
-	},
-	{
-		id: 2,
-		image:
-			"https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-		title: "Bollywood",
-	},
-	{
-		id: 3,
-		image:
-			"https://images.unsplash.com/photo-1516934024742-b461fba47600?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-		title: "Wildlife",
-	},
-	{
-		id: 4,
-		image:
-			"https://images.unsplash.com/photo-1697130383976-38f28c444292?q=80&w=2526&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-		title: "Politics",
-	},
-	{
-		id: 5,
-		image:
-			"https://images.unsplash.com/photo-1605806616949-1e87b487fc2f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-		title: "Crime",
-	},
-];
+import axios from "axios";
+import { useLayoutEffect, useState } from "react";
 
 export default function ExploreScreen() {
+	const [topics, setTopics] = useState<Topic[]>([]);
+
+	useLayoutEffect(() => {
+		axios
+			.get("/api/topic")
+			.then((response) => {
+				setTopics(response.data as Topic[]);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, []);
+
 	return (
 		<ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
 			<View style={styles.header}>
@@ -50,11 +32,7 @@ export default function ExploreScreen() {
 					}}
 				>
 					<Text style={styles.headingSmall}>MY FEED</Text>
-					<MaterialCommunityIcons
-						name="arrow-right"
-						size={24}
-						color="#00308F"
-					/>
+					<MaterialCommunityIcons name="arrow-right" size={24} color="purple" />
 				</View>
 			</View>
 			<View style={styles.featuredStoriesContainer}>
@@ -77,7 +55,7 @@ export default function ExploreScreen() {
 					showsHorizontalScrollIndicator={false}
 				>
 					{topics.map((topic) => (
-						<Topic key={topic.id} image={topic.image} title={topic.title} />
+						<Topic key={topic._id} image={topic.image} title={topic.title} />
 					))}
 				</ScrollView>
 			</View>
@@ -100,13 +78,13 @@ const styles = StyleSheet.create({
 	},
 	headingLarge: {
 		fontSize: 24,
-		fontWeight: "bold",
+		fontWeight: "500",
 	},
 	headingSmall: {
-		fontSize: 12,
+		fontSize: 14,
 		fontWeight: "bold",
 
-		color: "#00308F",
+		color: "purple",
 	},
 	featuredStoriesContainer: {
 		flexDirection: "row",
@@ -117,7 +95,7 @@ const styles = StyleSheet.create({
 	topicContainer: {},
 	topicSectionHeading: {
 		fontSize: 20,
-		fontWeight: "bold",
+		fontWeight: "500",
 		paddingTop: 20,
 		paddingBottom: 10,
 	},

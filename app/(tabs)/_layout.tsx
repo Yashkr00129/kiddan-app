@@ -1,8 +1,10 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
 import Head from "expo-router/head";
+import axios from "axios";
 
 export default function TabLayout() {
+	axios.defaults.baseURL = "https://qqygfatup8.ap-south-1.awsapprunner.com";
 	return (
 		<>
 			<Head>
@@ -13,7 +15,7 @@ export default function TabLayout() {
 				/>
 			</Head>
 			<Tabs
-				screenOptions={{ tabBarActiveTintColor: "black", headerShown: false }}
+				screenOptions={{ tabBarActiveTintColor: "purple", headerShown: false }}
 			>
 				<Tabs.Screen
 					name="index"

@@ -56,16 +56,16 @@ const styles = StyleSheet.create({
 	},
 	heading: {
 		fontSize: 20,
-		fontWeight: "bold",
+		fontWeight: "500",
 		paddingTop: 20,
 		paddingBottom: 10,
 	},
 	viewButton: {
-		fontSize: 12,
+		fontSize: 14,
 		fontWeight: "bold",
 		paddingTop: 20,
 		paddingBottom: 10,
-		color: "#00308F",
+		color: "purple",
 	},
 	notificationContainer: {
 		flexDirection: "row",

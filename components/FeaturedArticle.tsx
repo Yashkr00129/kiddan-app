@@ -4,20 +4,21 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 const FeaturedArticle = () => {
 	return (
 		<ImageBackground
-			blurRadius={10}
+			blurRadius={5}
 			imageStyle={{
 				borderRadius: 10,
 			}}
 			source={{
-				uri: "https://images.unsplash.com/photo-1719937206168-f4c829152b91?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+				uri: "https://media.nature.com/w1248/magazine-assets/d41586-024-03320-6/d41586-024-03320-6_27701526.jpg?as=webp",
 			}}
 			style={styles.container}
 		>
 			<View>
 				<View
 					style={{
-						backgroundColor: "black",
+						backgroundColor: "purple",
 						padding: 5,
+						paddingHorizontal: 10,
 						borderRadius: 5,
 					}}
 				>
@@ -45,6 +46,7 @@ const styles = StyleSheet.create({
 		alignItems: "flex-start",
 		marginRight: 10,
 		padding: 10,
+		paddingLeft: 12,
 	},
 	title: {
 		color: "white",

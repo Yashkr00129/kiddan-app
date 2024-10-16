@@ -3,6 +3,7 @@ import React from "react";
 import Feather from "@expo/vector-icons/Feather";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import Article from "@/components/Article";
+import PagerView from "react-native-pager-view";
 
 export default function FeedScreen() {
 	return (
@@ -15,5 +16,9 @@ export default function FeedScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+	},
+	page: {
+		justifyContent: "center",
+		alignItems: "center",
 	},
 });
