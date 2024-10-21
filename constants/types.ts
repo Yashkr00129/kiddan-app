@@ -2,13 +2,14 @@ type Topic = {
 	_id: number;
 	title: string;
 	image: string;
+	__v: number;
 };
 
-type Article = {
-	id: number;
+type ArticleWithPopulatedTopic = {
+	_id: number;
 	title: string;
-	image: string;
-	topic: string;
-	text: string;
+	images: string[];
+	topics: Topic[];
+	description: string;
 	featured: boolean;
 };

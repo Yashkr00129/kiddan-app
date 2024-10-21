@@ -1,0 +1,1 @@
+1. When creating news, give an option to send notification.
