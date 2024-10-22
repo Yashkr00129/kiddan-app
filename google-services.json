@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "945957262887",
+    "project_id": "kiddaan-news",
+    "storage_bucket": "kiddaan-news.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945957262887:android:0240d72c9ac5a761e9e002",
+        "android_client_info": {
+          "package_name": "com.yashkr00129.kiddannews"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU4AK3YAHnULNdbY_Fj6GYci0zQ-5WS2s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
