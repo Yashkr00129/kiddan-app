@@ -17,7 +17,6 @@ export default function FeedScreen() {
 			.then((response) => {
 				setArticles(response.data);
 				setLoading(false);
-				console.log(response.data);
 			})
 			.catch((error) => {
 				console.log(error);

@@ -16,6 +16,7 @@ export default function Article({
 }: {
 	article: ArticleWithPopulatedTopic;
 }) {
+	const descriptionList = splitString(article.description, 400);
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView>
@@ -33,7 +34,13 @@ export default function Article({
 						<Feather name="share-2" size={30} color="purple" />
 					</View>
 					<Text style={styles.heading}>{article.title}</Text>
-					<Text style={styles.articleText}>{article.description}</Text>
+					<PagerView initialPage={0} style={{ height: 250 }}>
+						{descriptionList.map((text, index) => (
+							<View key={index}>
+								<Text style={styles.articleText}>{text}</Text>
+							</View>
+						))}
+					</PagerView>
 				</View>
 			</ScrollView>
 		</SafeAreaView>
@@ -78,3 +85,47 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 	},
 });
+
+function splitString(text: string, chunkSize: number): string[] {
+	// Split by both spaces and newlines
+	const lines = text.split("\n");
+	const chunks: string[] = [];
+	let currentChunk = "";
+
+	for (const line of lines) {
+		// If this is not the first line and adding \n + line would exceed chunk size
+		if (currentChunk && currentChunk.length + 1 + line.length > chunkSize) {
+			chunks.push(currentChunk.trim());
+			currentChunk = line;
+		} else {
+			// Add newline before line if it's not the first line in chunk
+			if (currentChunk) currentChunk += "\n";
+			currentChunk += line;
+		}
+
+		// Process words within the current line
+		const words = line.split(" ");
+		let lineChunk = "";
+
+		for (const word of words) {
+			if (lineChunk && lineChunk.length + 1 + word.length > chunkSize) {
+				chunks.push(lineChunk.trim());
+				lineChunk = word;
+			} else {
+				if (lineChunk) lineChunk += " ";
+				lineChunk += word;
+			}
+		}
+
+		if (lineChunk) {
+			chunks.push(lineChunk.trim());
+		}
+	}
+
+	// Push the last chunk if there's anything left
+	if (currentChunk) {
+		chunks.push(currentChunk.trim());
+	}
+
+	return chunks.filter((chunk) => chunk.length > 0); // Remove empty chunks
+}
