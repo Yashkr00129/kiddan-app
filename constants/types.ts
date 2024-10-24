@@ -13,3 +13,20 @@ type ArticleWithPopulatedTopic = {
 	description: string;
 	featured: boolean;
 };
+
+type Article = {
+	_id: number;
+	title: string;
+	images: string[];
+	topics: string[];
+	description: string;
+	featured: boolean;
+};
+
+type DbNotification = {
+	_id: string;
+	title: string;
+	description: string;
+	article: Article;
+	__v: number;
+};

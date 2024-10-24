@@ -65,15 +65,6 @@ export default function PrefrencesPage() {
 		setDisabled(false);
 	}
 
-	// useEffect(() => {
-	// 	if (!enableNotifications) {
-	// 	} else {
-	// 		setDisabled(true);
-	// 		handlePushNotificationRegistration();
-	// 		setDisabled(false);
-	// 	}
-	// }, [enableNotifications]);
-
 	return (
 		<View style={styles.container}>
 			<Text style={[styles.heading, { marginBottom: 10 }]}>Prefrences</Text>

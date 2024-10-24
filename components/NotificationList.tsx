@@ -1,45 +1,51 @@
 import { Button, FlatList, Image, StyleSheet, Text, View } from "react-native";
-import React from "react";
-
-const notifications = [
-	{
-		text: "Rafael Nadal retires from tennis aged 38",
-		href: "https://images.unsplash.com/photo-1530915365347-e35b749a0381?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-	},
-	{
-		text: "Harry Brook smashes second-fastest triple hundred in Test cricket history",
-		href: "https://plus.unsplash.com/premium_photo-1679917506585-2c7b89054610?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-	},
-	{
-		text: "Rafael Nadal retires from tennis aged 38",
-		href: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2020&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-	},
-];
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function NotificationList() {
+	const [notifications, setNotifications] = useState<DbNotification[]>([]);
+
+	useEffect(() => {
+		const fetchNotifications = async () => {
+			const res = await axios.get("/api/notification");
+			setNotifications(res.data);
+		};
+		fetchNotifications();
+	}, []);
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
 				<Text style={styles.heading}>Notifications</Text>
 				<Text style={styles.viewButton}>VIEW ALL</Text>
 			</View>
-			{notifications.map((notification, index) => (
-				<View style={styles.notificationContainer} key={index}>
-					<View style={{ flex: 10 }}>
-						<Text style={styles.notificationText}>{notification.text}</Text>
-					</View>
-					<View style={{ flex: 2 }}>
-						<Image
-							source={{ uri: notification.href }}
-							style={{
-								width: 60,
-								height: 60,
-								borderRadius: 10,
-							}}
-						/>
-					</View>
-				</View>
-			))}
+			<FlatList
+				data={notifications}
+				keyExtractor={(item) => item._id}
+				renderItem={({ item: notification }) => {
+					return (
+						<>
+							<View style={styles.notificationContainer}>
+								<View style={{ flex: 10 }}>
+									<Text style={styles.notificationText}>
+										{notification.title}
+									</Text>
+								</View>
+								<View style={{ flex: 2 }}>
+									<Image
+										source={{ uri: notification.article.images[0] }}
+										style={{
+											width: 60,
+											height: 60,
+											borderRadius: 10,
+										}}
+									/>
+								</View>
+							</View>
+						</>
+					);
+				}}
+			/>
 		</View>
 	);
 }
