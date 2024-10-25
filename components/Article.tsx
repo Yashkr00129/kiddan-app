@@ -19,6 +19,27 @@ export default function Article({
 }) {
 	const descriptionList = splitString(article.description, 400);
 
+	if (article.type === "Image Carousel") {
+		console.log(article.images);
+		return (
+			<SafeAreaView style={styles.container}>
+				<PagerView
+					orientation={"horizontal"}
+					initialPage={0}
+					style={{ height: "100%" }}
+				>
+					{article.images.map((image, index) => (
+						<View key={index}>
+							<Image
+								source={{ uri: image }}
+								style={{ height: "100%", width: "100%" }}
+							/>
+						</View>
+					))}
+				</PagerView>
+			</SafeAreaView>
+		);
+	}
 	if (article.type === "Video Carousel") return <VideoScreen />;
 	return (
 		<SafeAreaView style={styles.container}>

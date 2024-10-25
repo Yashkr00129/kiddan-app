@@ -20,12 +20,9 @@ export default function PrefrencesPage() {
 	const [disabled, setDisabled] = useState(false);
 
 	async function handlePushNotificationRegistration() {
-		console.log("Function being called.");
 		let token = await getExistingPushToken();
 
 		setDisabled(true);
-
-		console.log("Current State Of Notifications - ", enableNotifications);
 
 		if (!enableNotifications) {
 			if (Platform.OS === "android") {
