@@ -4,7 +4,7 @@
 		"slug": "kiddan-news",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/images/icon.png",
+		"icon": "./assets/images/kiddan_app_logo_android.jpg",
 		"scheme": "myapp",
 		"userInterfaceStyle": "automatic",
 		"splash": {
@@ -33,11 +33,12 @@
 			[
 				"expo-notifications",
 				{
-					"icon": "./assets/splash.png",
+					"icon": "./assets/images/kiddan_app_logo_android.jpg",
 					"color": "#ffffff",
 					"defaultChannel": "default"
 				}
-			]
+			],
+			"expo-video"
 		],
 		"experiments": {
 			"typedRoutes": true

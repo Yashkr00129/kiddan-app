@@ -18,8 +18,8 @@ Notifications.setNotificationHandler({
 });
 
 export default function TabLayout() {
-	// axios.defaults.baseURL = "https://qqygfatup8.ap-south-1.awsapprunner.com";
-	axios.defaults.baseURL = "http://192.168.60.24:3000";
+	axios.defaults.baseURL = "https://qqygfatup8.ap-south-1.awsapprunner.com";
+	// axios.defaults.baseURL = "http://192.168.60.24:3000";
 
 	return (
 		<>

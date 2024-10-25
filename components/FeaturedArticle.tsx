@@ -1,7 +1,12 @@
 import { Text, View, StyleSheet, ImageBackground } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-const FeaturedArticle = () => {
+const FeaturedArticle = ({
+	article,
+}: {
+	article: ArticleWithPopulatedTopic;
+}) => {
+	console.log(article);
 	return (
 		<ImageBackground
 			blurRadius={5}
@@ -9,7 +14,7 @@ const FeaturedArticle = () => {
 				borderRadius: 10,
 			}}
 			source={{
-				uri: "https://media.nature.com/w1248/magazine-assets/d41586-024-03320-6/d41586-024-03320-6_27701526.jpg?as=webp",
+				uri: article.images[0],
 			}}
 			style={styles.container}
 		>
@@ -27,13 +32,11 @@ const FeaturedArticle = () => {
 							color: "white",
 						}}
 					>
-						Social
+						{article.topics[0]?.title || ""}
 					</Text>
 				</View>
 			</View>
-			<Text style={styles.title}>
-				How to create a college internship where students actually learn
-			</Text>
+			<Text style={styles.title}>{article.title}</Text>
 		</ImageBackground>
 	);
 };

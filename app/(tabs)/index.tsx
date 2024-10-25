@@ -8,6 +8,9 @@ import { useLayoutEffect, useState } from "react";
 
 export default function ExploreScreen() {
 	const [topics, setTopics] = useState<Topic[]>([]);
+	const [featuredArticles, setFeaturedArticles] = useState<
+		ArticleWithPopulatedTopic[]
+	>([]);
 
 	useLayoutEffect(() => {
 		axios
@@ -18,10 +21,19 @@ export default function ExploreScreen() {
 			.catch((error) => {
 				console.log(error);
 			});
+
+		axios
+			.get("/api/article?featured=true")
+			.then((response) => {
+				setFeaturedArticles(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	}, []);
 
 	return (
-		<ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+		<View style={styles.container}>
 			<View style={styles.header}>
 				<Text style={styles.headingLarge}>Featured Stories</Text>
 				<View
@@ -35,34 +47,34 @@ export default function ExploreScreen() {
 					<MaterialCommunityIcons name="arrow-right" size={24} color="purple" />
 				</View>
 			</View>
-			<View style={styles.featuredStoriesContainer}>
-				<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-					<FeaturedArticle />
-					<FeaturedArticle />
-					<FeaturedArticle />
-					<FeaturedArticle />
-					<FeaturedArticle />
-					<FeaturedArticle />
-				</ScrollView>
-			</View>
+
+			<ScrollView
+				horizontal
+				showsHorizontalScrollIndicator={false}
+				style={{ paddingTop: 20 }}
+			>
+				{featuredArticles.map((article, index) => (
+					<FeaturedArticle key={index} article={article} />
+				))}
+			</ScrollView>
+
 			<View>
-				<View style={styles.topicContainer}>
-					<Text style={styles.topicSectionHeading}>Filter By Topics</Text>
-				</View>
-				<ScrollView
-					style={styles.topics}
-					horizontal
-					showsHorizontalScrollIndicator={false}
-				>
-					{topics.map((topic) => (
-						<Topic key={topic._id} image={topic.image} title={topic.title} />
-					))}
-				</ScrollView>
+				<Text style={styles.topicSectionHeading}>Filter By Topics</Text>
 			</View>
+			<ScrollView
+				style={styles.topics}
+				horizontal
+				showsHorizontalScrollIndicator={false}
+			>
+				{topics.map((topic) => (
+					<Topic key={topic._id} image={topic.image} title={topic.title} />
+				))}
+			</ScrollView>
+
 			<View>
 				<NotificationList />
 			</View>
-		</ScrollView>
+		</View>
 	);
 }
 
@@ -86,13 +98,7 @@ const styles = StyleSheet.create({
 
 		color: "purple",
 	},
-	featuredStoriesContainer: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
-		paddingTop: 20,
-	},
-	topicContainer: {},
+
 	topicSectionHeading: {
 		fontSize: 20,
 		fontWeight: "500",

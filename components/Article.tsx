@@ -10,6 +10,7 @@ import React, { useLayoutEffect, useState } from "react";
 import Feather from "@expo/vector-icons/Feather";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import PagerView from "react-native-pager-view";
+import VideoScreen from "./Video";
 
 export default function Article({
 	article,
@@ -17,6 +18,8 @@ export default function Article({
 	article: ArticleWithPopulatedTopic;
 }) {
 	const descriptionList = splitString(article.description, 400);
+
+	if (article.type === "Video Carousel") return <VideoScreen />;
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView>
@@ -29,7 +32,10 @@ export default function Article({
 				<View style={{ padding: 20 }}>
 					<View style={styles.controls}>
 						<View style={styles.topic}>
-							<Text style={{ color: "white" }}>{article.topics[0].title}</Text>
+							<Text style={{ color: "white" }}>
+								{" "}
+								{article.topics[0]?.title || ""}
+							</Text>
 						</View>
 						<Feather name="share-2" size={30} color="purple" />
 					</View>

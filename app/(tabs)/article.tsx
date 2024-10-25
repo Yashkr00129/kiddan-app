@@ -6,9 +6,10 @@ import Article from "@/components/Article";
 import PagerView from "react-native-pager-view";
 import MyPager from "@/components/PagerView";
 import axios from "axios";
+import VideoScreen from "@/components/Video";
 
 export default function FeedScreen() {
-	const [articles, setArticles] = useState([]);
+	const [articles, setArticles] = useState<ArticleWithPopulatedTopic[]>([]);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
