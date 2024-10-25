@@ -40,7 +40,8 @@ export default function Article({
 			</SafeAreaView>
 		);
 	}
-	if (article.type === "Video Carousel") return <VideoScreen />;
+	if (article.type === "Video Carousel")
+		return <VideoScreen videoSource={article.images[0]} />;
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView>
