@@ -20,7 +20,6 @@ export default function Article({
 	const descriptionList = splitString(article.description, 400);
 
 	if (article.type === "Image Carousel") {
-		console.log(article.images);
 		return (
 			<SafeAreaView style={styles.container}>
 				<PagerView

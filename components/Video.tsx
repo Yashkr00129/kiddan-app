@@ -32,6 +32,7 @@ export default function VideoScreen({
 			<VideoView
 				ref={ref}
 				style={styles.video}
+				contentFit="cover"
 				player={player}
 				allowsFullscreen={false}
 				allowsPictureInPicture={false}
