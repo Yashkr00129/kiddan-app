@@ -13,6 +13,7 @@ type ArticleWithPopulatedTopic = {
 	description: string;
 	featured: boolean;
 	type: "Regular" | "Image Carousel" | "Video Carousel";
+	url: string;
 };
 
 type Article = {
@@ -21,6 +22,7 @@ type Article = {
 	images: string[];
 	topics: string[];
 	description: string;
+	url: string;
 	featured: boolean;
 };
 

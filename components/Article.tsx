@@ -1,4 +1,5 @@
 import {
+	Button,
 	Image,
 	SafeAreaView,
 	ScrollView,
@@ -11,6 +12,9 @@ import Feather from "@expo/vector-icons/Feather";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import PagerView from "react-native-pager-view";
 import VideoScreen from "./Video";
+import ImageArticle from "./Articles/ImageArticle";
+import { SwiperFlatList } from "react-native-swiper-flatlist";
+import RegularArticle from "./Articles/RegularArticle";
 
 export default function Article({
 	article,
@@ -19,59 +23,12 @@ export default function Article({
 }) {
 	const descriptionList = splitString(article.description, 400);
 
-	if (article.type === "Image Carousel") {
-		return (
-			<SafeAreaView style={styles.container}>
-				<PagerView
-					orientation={"horizontal"}
-					initialPage={0}
-					style={{ height: "100%" }}
-				>
-					{article.images.map((image, index) => (
-						<View key={index}>
-							<Image
-								source={{ uri: image }}
-								style={{ height: "100%", width: "100%" }}
-							/>
-						</View>
-					))}
-				</PagerView>
-			</SafeAreaView>
-		);
-	}
+	if (article.type === "Image Carousel")
+		return <ImageArticle article={article} />;
+
 	if (article.type === "Video Carousel")
 		return <VideoScreen videoSource={article.images[0]} />;
-	return (
-		<SafeAreaView style={styles.container}>
-			<ScrollView>
-				<Image
-					source={{
-						uri: article.images[0],
-					}}
-					style={styles.image}
-				/>
-				<View style={{ padding: 20 }}>
-					<View style={styles.controls}>
-						<View style={styles.topic}>
-							<Text style={{ color: "white" }}>
-								{" "}
-								{article.topics[0]?.title || ""}
-							</Text>
-						</View>
-						<Feather name="share-2" size={30} color="purple" />
-					</View>
-					<Text style={styles.heading}>{article.title}</Text>
-					<PagerView initialPage={0} style={{ height: 250 }}>
-						{descriptionList.map((text, index) => (
-							<View key={index}>
-								<Text style={styles.articleText}>{text}</Text>
-							</View>
-						))}
-					</PagerView>
-				</View>
-			</ScrollView>
-		</SafeAreaView>
-	);
+	return <RegularArticle article={article} />;
 }
 
 const styles = StyleSheet.create({
@@ -110,6 +67,14 @@ const styles = StyleSheet.create({
 		padding: 5,
 		paddingHorizontal: 10,
 		borderRadius: 5,
+	},
+	readMoreButtonContainer: {
+		position: "absolute",
+		bottom: 0,
+		padding: 20,
+		margin: "auto",
+		alignSelf: "center",
+		width: 200,
 	},
 });
 
