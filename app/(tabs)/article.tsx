@@ -6,11 +6,17 @@ import Article from "@/components/Article";
 import PagerView from "react-native-pager-view";
 import MyPager from "@/components/PagerView";
 import axios from "axios";
-import VideoScreen from "@/components/Video";
+import VideoArticle from "@/components/Articles/VideoArticle";
+import SwiperFlatList from "react-native-swiper-flatlist";
 
 export default function FeedScreen() {
 	const [articles, setArticles] = useState<ArticleWithPopulatedTopic[]>([]);
 	const [loading, setLoading] = useState(true);
+	const [currentIndex, setCurrentIndex] = useState(0);
+
+	const handleChangeIndexValue = ({ index }: { index: number }) => {
+		setCurrentIndex(index);
+	};
 
 	useEffect(() => {
 		axios
@@ -26,15 +32,20 @@ export default function FeedScreen() {
 	}, []);
 	return (
 		<View style={styles.container}>
-			<PagerView
-				style={styles.container}
-				initialPage={0}
-				orientation={"vertical"}
-			>
-				{articles.map((article, index) => (
-					<Article key={index} article={article} />
-				))}
-			</PagerView>
+			<SwiperFlatList
+				vertical={true}
+				onChangeIndex={handleChangeIndexValue}
+				data={articles}
+				renderItem={({ item: article, index }) => (
+					<Article
+						key={index}
+						article={article}
+						index={index}
+						currentIndex={currentIndex}
+					/>
+				)}
+				keyExtractor={(item, index) => `${index}`}
+			/>
 		</View>
 	);
 }

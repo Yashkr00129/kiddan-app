@@ -31,7 +31,13 @@ export default function TabLayout() {
 				/>
 			</Head>
 			<Tabs
-				screenOptions={{ tabBarActiveTintColor: "purple", headerShown: false }}
+				screenOptions={{
+					tabBarActiveTintColor: "purple",
+					headerShown: false,
+					tabBarStyle: {
+						height: 50,
+					},
+				}}
 			>
 				<Tabs.Screen
 					name="index"
