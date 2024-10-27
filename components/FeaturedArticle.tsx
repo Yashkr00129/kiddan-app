@@ -9,34 +9,36 @@ const FeaturedArticle = ({
 	console.log(article);
 	return (
 		<ImageBackground
-			blurRadius={5}
+			blurRadius={2}
 			imageStyle={{
 				borderRadius: 10,
 			}}
 			source={{
 				uri: article.images[0],
 			}}
-			style={styles.container}
+			style={{ marginRight: 10 }}
 		>
-			<View>
-				<View
-					style={{
-						backgroundColor: "purple",
-						padding: 5,
-						paddingHorizontal: 10,
-						borderRadius: 5,
-					}}
-				>
-					<Text
+			<View style={styles.container}>
+				<View>
+					<View
 						style={{
-							color: "white",
+							backgroundColor: "purple",
+							padding: 5,
+							paddingHorizontal: 10,
+							borderRadius: 5,
 						}}
 					>
-						{article.topics[0]?.title || ""}
-					</Text>
+						<Text
+							style={{
+								color: "white",
+							}}
+						>
+							{article.topics[0]?.title || ""}
+						</Text>
+					</View>
 				</View>
+				<Text style={styles.title}>{article.title}</Text>
 			</View>
-			<Text style={styles.title}>{article.title}</Text>
 		</ImageBackground>
 	);
 };
@@ -47,9 +49,10 @@ const styles = StyleSheet.create({
 		height: 200,
 		justifyContent: "space-between",
 		alignItems: "flex-start",
-		marginRight: 10,
+		borderRadius: 10,
 		padding: 10,
 		paddingLeft: 12,
+		backgroundColor: "#00000069",
 	},
 	title: {
 		color: "white",

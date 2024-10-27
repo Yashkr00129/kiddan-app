@@ -10,6 +10,7 @@ import {
 	Pressable,
 } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { usePathname } from "expo-router";
 
 export default function VideoArticle({
 	videoSource,
@@ -20,14 +21,17 @@ export default function VideoArticle({
 	index: number;
 	currentIndex: number;
 }) {
+	const pathname = usePathname();
 	const windowWidth = Dimensions.get("window").width;
 	const windowHeight = Dimensions.get("window").height;
-	const ref = useRef(null);
+	const videoRef = useRef(null);
 	const [isPlaying, setIsPlaying] = useState(true);
 	const player = useVideoPlayer(videoSource, (player: any) => {
 		player.loop = true;
 		if (index === currentIndex) player.play();
 	});
+
+	const videoArticlePathname = "/article";
 
 	useEffect(() => {
 		const subscription = player.addListener(
@@ -39,8 +43,17 @@ export default function VideoArticle({
 
 		return () => {
 			subscription.remove();
+			// player.pause();
 		};
 	}, [player]);
+
+	useEffect(() => {
+		if (pathname !== videoArticlePathname) {
+			player.pause();
+		} else {
+			player.play();
+		}
+	}, [pathname]);
 
 	useEffect(() => {
 		if (index === currentIndex) player.play();
@@ -74,7 +87,7 @@ export default function VideoArticle({
 				)}
 			</View>
 			<VideoView
-				ref={ref}
+				ref={videoRef}
 				style={{
 					width: windowWidth,
 					height: windowHeight - 50,
