@@ -6,6 +6,8 @@ import {
 	Text,
 	View,
 	Dimensions,
+	Touchable,
+	TouchableOpacity,
 } from "react-native";
 
 import React, { useLayoutEffect, useState } from "react";
@@ -25,6 +27,10 @@ export default function RegularArticle({
 	const openOriginalArticle = async () =>
 		await WebBrowser.openBrowserAsync(article.url);
 
+	const openKiddan = async () => {
+		await WebBrowser.openBrowserAsync("http://kiddaan.com");
+	};
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<Image
@@ -33,9 +39,14 @@ export default function RegularArticle({
 				}}
 				style={styles.image}
 			/>
-			<View style={styles.branding}>
-				<Text style={styles.brandingText}>Kiddan</Text>
+			<View style={styles.brandingContainer}>
+				<TouchableOpacity onPress={openKiddan}>
+					<View style={styles.branding}>
+						<Text style={styles.brandingText}>Kiddan</Text>
+					</View>
+				</TouchableOpacity>
 			</View>
+
 			<View style={{ padding: 20 }}>
 				<View style={styles.controls}>
 					<View style={styles.topic}>
@@ -117,14 +128,21 @@ const styles = StyleSheet.create({
 		letterSpacing: 3,
 		// backgroundColor: "teal",
 	},
+	brandingContainer: {
+		position: "absolute",
+		top: 350,
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		width: "100%",
+	},
 	branding: {
 		backgroundColor: "white",
 		borderColor: "purple",
 		borderWidth: 1,
 		padding: 5,
-		position: "absolute",
-		top: 350,
-		left: "50%",
+		paddingHorizontal: 15,
+		borderRadius: 10,
 	},
 	brandingText: { color: "purple" },
 	topic: {
