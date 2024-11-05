@@ -43,7 +43,6 @@ export default function VideoArticle({
 
 		return () => {
 			subscription.remove();
-			// player.pause();
 		};
 	}, [player]);
 
@@ -51,7 +50,7 @@ export default function VideoArticle({
 		if (pathname !== videoArticlePathname) {
 			player.pause();
 		} else {
-			player.play();
+			if (index === currentIndex) player.play();
 		}
 	}, [pathname]);
 

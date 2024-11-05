@@ -1,15 +1,13 @@
-import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import Feather from "@expo/vector-icons/Feather";
-import EvilIcons from "@expo/vector-icons/EvilIcons";
+import { useLocalSearchParams } from "expo-router";
+
 import Article from "@/components/Article";
-import PagerView from "react-native-pager-view";
-import MyPager from "@/components/PagerView";
 import axios from "axios";
-import VideoArticle from "@/components/Articles/VideoArticle";
 import SwiperFlatList from "react-native-swiper-flatlist";
 
 export default function FeedScreen() {
+	const params = useLocalSearchParams();
 	const [articles, setArticles] = useState<ArticleWithPopulatedTopic[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [currentIndex, setCurrentIndex] = useState(0);
@@ -18,9 +16,15 @@ export default function FeedScreen() {
 		setCurrentIndex(index);
 	};
 
-	useEffect(() => {
+	console.log(params);
+
+	useLayoutEffect(() => {
+		const api_url = params.topic
+			? `/api/article?topic=${params.topic}`
+			: "/api/article";
+
 		axios
-			.get("/api/article")
+			.get(api_url)
 			.then((response) => {
 				setArticles(response.data);
 				setLoading(false);
@@ -29,7 +33,8 @@ export default function FeedScreen() {
 				console.log(error);
 				setLoading(false);
 			});
-	}, []);
+	}, [params.topic]);
+
 	return (
 		<View style={styles.container}>
 			<SwiperFlatList

@@ -14,7 +14,7 @@ const FeaturedArticle = ({
 				borderRadius: 10,
 			}}
 			source={{
-				uri: article.images[0],
+				uri: article.thumbnail,
 			}}
 			style={{ marginRight: 10 }}
 		>

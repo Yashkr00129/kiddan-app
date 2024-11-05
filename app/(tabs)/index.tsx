@@ -1,16 +1,29 @@
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import {
+	Text,
+	View,
+	StyleSheet,
+	ScrollView,
+	TouchableOpacity,
+} from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FeaturedArticle from "@/components/FeaturedArticle";
 import Topic from "@/components/Topic";
 import NotificationList from "@/components/NotificationList";
 import axios from "axios";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { router, useNavigation } from "expo-router";
 
 export default function ExploreScreen() {
+	const navigation = useNavigation();
+
 	const [topics, setTopics] = useState<Topic[]>([]);
 	const [featuredArticles, setFeaturedArticles] = useState<
 		ArticleWithPopulatedTopic[]
 	>([]);
+
+	useEffect(() => {
+		navigation.setOptions({ headerShown: false });
+	}, [navigation]);
 
 	useLayoutEffect(() => {
 		axios
@@ -67,12 +80,17 @@ export default function ExploreScreen() {
 				showsHorizontalScrollIndicator={false}
 			>
 				{topics.map((topic) => (
-					<Topic key={topic._id} image={topic.image} title={topic.title} />
+					<TouchableOpacity
+						key={topic._id}
+						onPress={() => router.push(`/article?topic=${topic._id}`)}
+					>
+						<Topic image={topic.image} title={topic.title} />
+					</TouchableOpacity>
 				))}
 			</ScrollView>
 
 			<View>
-				<NotificationList />
+				<NotificationList limit={3} />
 			</View>
 		</View>
 	);

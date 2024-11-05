@@ -9,11 +9,14 @@ type ArticleWithPopulatedTopic = {
 	_id: number;
 	title: string;
 	images: string[];
+	thumbnail: string;
 	topics: Topic[];
 	description: string;
 	featured: boolean;
 	type: "Regular" | "Image Carousel" | "Video Carousel";
 	url: string;
+	createdAt: string;
+	updatedAt: string;
 };
 
 type Article = {

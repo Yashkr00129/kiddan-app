@@ -33,6 +33,9 @@ export default function RegularArticle({
 				}}
 				style={styles.image}
 			/>
+			<View style={styles.branding}>
+				<Text style={styles.brandingText}>Kiddan</Text>
+			</View>
 			<View style={{ padding: 20 }}>
 				<View style={styles.controls}>
 					<View style={styles.topic}>
@@ -41,7 +44,17 @@ export default function RegularArticle({
 							{article.topics[0]?.title || ""}
 						</Text>
 					</View>
+
 					<Feather name="share-2" size={30} color="purple" />
+				</View>
+				<View style={{ flexDirection: "row", gap: 10 }}>
+					<Text style={{ color: "purple", fontSize: 15 }}>
+						{new Date(article.createdAt).toDateString()}
+					</Text>
+
+					<Text style={{ color: "purple", fontSize: 15 }}>
+						{new Date(article.createdAt).toLocaleTimeString()}
+					</Text>
 				</View>
 				<Text style={styles.heading}>{article.title}</Text>
 				<SwiperFlatList
@@ -104,6 +117,16 @@ const styles = StyleSheet.create({
 		letterSpacing: 3,
 		// backgroundColor: "teal",
 	},
+	branding: {
+		backgroundColor: "white",
+		borderColor: "purple",
+		borderWidth: 1,
+		padding: 5,
+		position: "absolute",
+		top: 350,
+		left: "50%",
+	},
+	brandingText: { color: "purple" },
 	topic: {
 		backgroundColor: "purple",
 		padding: 5,
