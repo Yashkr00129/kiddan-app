@@ -1,5 +1,5 @@
-import { Text, View, StyleSheet, ImageBackground } from "react-native";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import {ImageBackground, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {router} from "expo-router";
 
 const FeaturedArticle = ({
 	article,
@@ -7,6 +7,8 @@ const FeaturedArticle = ({
 	article: ArticleWithPopulatedTopic;
 }) => {
 	return (
+		<TouchableOpacity onPress={() => router.push(`/article?articleId=${article._id}`)}>
+
 		<ImageBackground
 			blurRadius={2}
 			imageStyle={{
@@ -39,6 +41,7 @@ const FeaturedArticle = ({
 				<Text style={styles.title}>{article.title}</Text>
 			</View>
 		</ImageBackground>
+		</TouchableOpacity>
 	);
 };
 

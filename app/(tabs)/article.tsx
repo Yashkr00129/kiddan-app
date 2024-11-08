@@ -32,7 +32,7 @@ export default function FeedScreen() {
 					const articles = response.data as ArticleWithPopulatedTopic[];
 					const articleToBeFirstIndex = articles.findIndex(article => article._id === params.articleId);
 					const articleToBeFirst = articles[articleToBeFirstIndex]
-					const newArticles = [articleToBeFirst, ...articles.filter(article => article._id === params.articleId)];
+					const newArticles = [articleToBeFirst, ...articles.filter(article => article._id !== params.articleId)];
 					setArticles(newArticles);
 				}
 

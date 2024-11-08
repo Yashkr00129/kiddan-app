@@ -1,4 +1,4 @@
-import {FlatList, Image, StyleSheet, Text, View} from "react-native";
+import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useRouter} from "expo-router";
@@ -35,6 +35,9 @@ export default function NotificationList({limit, disableRedirect = false}: {
                 renderItem={({item: notification}) => {
                     return (
                         <>
+                            <TouchableOpacity
+                              onPress={() => router.push(`/article?articleId=${notification.article._id}`)}>
+
                             <View style={styles.notificationContainer}>
                                 <View style={{flex: 10}}>
                                     <Text style={styles.notificationText}>
@@ -52,6 +55,7 @@ export default function NotificationList({limit, disableRedirect = false}: {
                                     />
                                 </View>
                             </View>
+                            </TouchableOpacity>
                         </>
                     );
                 }}
