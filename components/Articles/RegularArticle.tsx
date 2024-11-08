@@ -1,21 +1,11 @@
-import {
-	Button,
-	Image,
-	SafeAreaView,
-	StyleSheet,
-	Text,
-	View,
-	Dimensions,
-	Touchable,
-	TouchableOpacity,
-} from "react-native";
+import {Button, Dimensions, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 
-import React, { useLayoutEffect, useState } from "react";
+import React from "react";
 import Feather from "@expo/vector-icons/Feather";
 
 import * as WebBrowser from "expo-web-browser";
 
-import { SwiperFlatList } from "react-native-swiper-flatlist";
+import {SwiperFlatList} from "react-native-swiper-flatlist";
 
 export default function RegularArticle({
 	article,
@@ -58,12 +48,12 @@ export default function RegularArticle({
 
 					<Feather name="share-2" size={30} color="purple" />
 				</View>
-				<View style={{ flexDirection: "row", gap: 10 }}>
-					<Text style={{ color: "purple", fontSize: 15 }}>
+				<View style={{flexDirection: "row", gap: 10, marginVertical: 10}}>
+					<Text style={{color: "purple", fontSize: 16, fontWeight: "semibold"}}>
 						{new Date(article.createdAt).toDateString()}
 					</Text>
 
-					<Text style={{ color: "purple", fontSize: 15 }}>
+					<Text style={{color: "purple", fontSize: 16, fontWeight: "semibold"}}>
 						{new Date(article.createdAt).toLocaleTimeString()}
 					</Text>
 				</View>
@@ -111,19 +101,18 @@ const styles = StyleSheet.create({
 	controls: {
 		flexDirection: "row",
 		justifyContent: "space-between",
-		paddingBottom: 20,
 	},
 	controlGroup: {
 		flexDirection: "row",
 		gap: 10,
 	},
 	heading: {
-		fontSize: 22,
-		fontWeight: "500",
+		fontSize: 20,
+		fontWeight: "600",
 	},
 	articleText: {
-		fontSize: 20,
-		paddingTop: 10,
+		fontSize: 18,
+		paddingTop: 5,
 		lineHeight: 24,
 		letterSpacing: 3,
 		// backgroundColor: "teal",
@@ -152,9 +141,8 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 	},
 	swiperFlatlistChild: {
-		maxHeight: 170,
+		maxHeight: 175,
 		width: width - 40,
-		// backgroundColor: "green",
 		justifyContent: "flex-start",
 		alignItems: "flex-start",
 	},
