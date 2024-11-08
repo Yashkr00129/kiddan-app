@@ -1,6 +1,6 @@
-import { StyleSheet, View } from "react-native";
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { useLocalSearchParams } from "expo-router";
+import {ActivityIndicator, StyleSheet, View} from "react-native";
+import React, {useLayoutEffect, useState} from "react";
+import {useLocalSearchParams} from "expo-router";
 
 import Article from "@/components/Article";
 import axios from "axios";
@@ -16,24 +16,38 @@ export default function FeedScreen() {
 		setCurrentIndex(index);
 	};
 
-	console.log(params);
 
 	useLayoutEffect(() => {
 		const api_url = params.topic
 			? `/api/article?topic=${params.topic}`
 			: "/api/article";
 
+		setLoading(true)
 		axios
 			.get(api_url)
 			.then((response) => {
-				setArticles(response.data);
-				setLoading(false);
+				if (!params.articleId) {
+					setArticles(response.data);
+				} else {
+					const articles = response.data as ArticleWithPopulatedTopic[];
+					const articleToBeFirstIndex = articles.findIndex(article => article._id === params.articleId);
+					const articleToBeFirst = articles[articleToBeFirstIndex]
+					const newArticles = [articleToBeFirst, ...articles.filter(article => article._id === params.articleId)];
+					setArticles(newArticles);
+				}
+
 			})
 			.catch((error) => {
 				console.log(error);
-				setLoading(false);
-			});
-	}, [params.topic]);
+
+			}).finally(() => setLoading(false));
+	}, [params.topic, params.articleId]);
+
+
+	if (loading) return <ActivityIndicator/>;
+
+
+
 
 	return (
 		<View style={styles.container}>

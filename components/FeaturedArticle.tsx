@@ -6,7 +6,6 @@ const FeaturedArticle = ({
 }: {
 	article: ArticleWithPopulatedTopic;
 }) => {
-	console.log(article);
 	return (
 		<ImageBackground
 			blurRadius={2}

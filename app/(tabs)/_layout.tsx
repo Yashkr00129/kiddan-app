@@ -1,12 +1,9 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Tabs } from "expo-router";
+import {router, Tabs} from "expo-router";
 import Head from "expo-router/head";
-import { Platform } from "react-native";
-import * as Device from "expo-device";
 
 import axios from "axios";
-import Constants from "expo-constants";
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useRef} from "react";
 import * as Notifications from "expo-notifications";
 
 Notifications.setNotificationHandler({
@@ -20,6 +17,25 @@ Notifications.setNotificationHandler({
 export default function TabLayout() {
 	// axios.defaults.baseURL = "https://b7fpgqz9cr.ap-south-1.awsapprunner.com";
 	axios.defaults.baseURL = "http://192.168.60.24:3000/";
+	const responseListener = useRef<Notifications.Subscription>();
+
+	const lastNotificationResponse = Notifications.useLastNotificationResponse();
+
+	useEffect(() => {
+		if (lastNotificationResponse && lastNotificationResponse.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER) {
+			handlePush(lastNotificationResponse);
+		}
+	}, [lastNotificationResponse]);
+
+	const handlePush = async ({notification}: Notifications.NotificationResponse) => {
+		console.log(notification);
+		const notificationData = notification.request.content.data;
+
+
+		if (notificationData.type === "link") {
+			router.push(notificationData.link);
+		}
+	}
 
 	return (
 		<>

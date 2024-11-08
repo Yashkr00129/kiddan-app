@@ -1,4 +1,4 @@
-import {Button, FlatList, Image, StyleSheet, Text, View} from "react-native";
+import {FlatList, Image, StyleSheet, Text, View} from "react-native";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useRouter} from "expo-router";
@@ -43,7 +43,7 @@ export default function NotificationList({limit, disableRedirect = false}: {
                                 </View>
                                 <View style={{flex: 2}}>
                                     <Image
-                                        source={{uri: notification.article.images[0]}}
+                                      source={{uri: notification.article.images[0] || "https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ="}}
                                         style={{
                                             width: 60,
                                             height: 60,

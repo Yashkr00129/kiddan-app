@@ -6,7 +6,7 @@ type Topic = {
 };
 
 type ArticleWithPopulatedTopic = {
-	_id: number;
+	_id: string;
 	title: string;
 	images: string[];
 	thumbnail: string;
