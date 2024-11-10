@@ -1,4 +1,4 @@
-import {Button, Dimensions, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {Dimensions, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 
 import React from "react";
 import Feather from "@expo/vector-icons/Feather";
@@ -6,6 +6,8 @@ import Feather from "@expo/vector-icons/Feather";
 import * as WebBrowser from "expo-web-browser";
 
 import {SwiperFlatList} from "react-native-swiper-flatlist";
+import AppButton from "@/components/ui/AppButton";
+import {OpenSans_500Medium, OpenSans_700Bold} from "@expo-google-fonts/open-sans";
 
 export default function RegularArticle({
 	article,
@@ -17,7 +19,7 @@ export default function RegularArticle({
 	const openOriginalArticle = async () =>
 		await WebBrowser.openBrowserAsync(article.url);
 
-	const openKiddan = async () => {
+	const openKiddaan = async () => {
 		await WebBrowser.openBrowserAsync("http://kiddaan.com");
 	};
 
@@ -30,9 +32,9 @@ export default function RegularArticle({
 				style={styles.image}
 			/>
 			<View style={styles.brandingContainer}>
-				<TouchableOpacity onPress={openKiddan}>
+				<TouchableOpacity onPress={openKiddaan}>
 					<View style={styles.branding}>
-						<Text style={styles.brandingText}>Kiddan</Text>
+						<Text style={styles.brandingText}>Kiddaan</Text>
 					</View>
 				</TouchableOpacity>
 			</View>
@@ -73,9 +75,11 @@ export default function RegularArticle({
 			</View>
 			{article.url && (
 				<View style={styles.readMoreButtonContainer}>
-					<Button
+					<AppButton
 						title="Read More"
-						color={"purple"}
+						style={{
+							backgroundColor: "purple"
+						}}
 						onPress={openOriginalArticle}
 					/>
 				</View>
@@ -87,7 +91,7 @@ export default function RegularArticle({
 const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
 	image: {
-		height: 360,
+		height: 320,
 		width: "100%",
 	},
 	container: {
@@ -109,17 +113,19 @@ const styles = StyleSheet.create({
 	heading: {
 		fontSize: 20,
 		fontWeight: "600",
+		fontFamily:"OpenSans_600SemiBold"
 	},
 	articleText: {
 		fontSize: 18,
 		paddingTop: 5,
 		lineHeight: 24,
-		letterSpacing: 3,
+		fontFamily: 'OpenSans_400Regular',
+		letterSpacing: 1
 		// backgroundColor: "teal",
 	},
 	brandingContainer: {
 		position: "absolute",
-		top: 350,
+		top: 310,
 		flexDirection: "row",
 		justifyContent: "center",
 		alignItems: "center",
@@ -138,7 +144,9 @@ const styles = StyleSheet.create({
 		backgroundColor: "purple",
 		padding: 5,
 		paddingHorizontal: 10,
-		borderRadius: 5,
+		borderRadius: 15,
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	swiperFlatlistChild: {
 		maxHeight: 175,

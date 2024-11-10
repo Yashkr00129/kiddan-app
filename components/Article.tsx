@@ -1,8 +1,8 @@
-import React, { useLayoutEffect, useState } from "react";
+import React from "react";
 import VideoArticle from "./Articles/VideoArticle";
 import ImageArticle from "./Articles/ImageArticle";
 import RegularArticle from "./Articles/RegularArticle";
-import { View, Dimensions } from "react-native";
+import {Dimensions, View} from "react-native";
 
 export default function Article({
 	article,
@@ -31,6 +31,7 @@ export default function Article({
 					videoSource={article.images[0]}
 					index={index}
 					currentIndex={currentIndex}
+					articleUrl={article.url}
 				/>
 			)}
 			{article.type === "Regular" && <RegularArticle article={article} />}

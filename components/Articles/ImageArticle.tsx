@@ -1,21 +1,16 @@
-import {
-	Button,
-	Image,
-	ImageBackground,
-	SafeAreaView,
-	StyleSheet,
-	Text,
-	View,
-} from "react-native";
-import React, { useState } from "react";
+import {Dimensions, ImageBackground, SafeAreaView, StyleSheet, View,} from "react-native";
+import React from "react";
 import PagerView from "react-native-pager-view";
 import * as WebBrowser from "expo-web-browser";
+import AppButton from "@/components/ui/AppButton";
 
 export default function ImageArticle({
 	article,
 }: {
 	article: ArticleWithPopulatedTopic;
 }) {
+	const windowWidth = Dimensions.get("window").width;
+	const windowHeight = Dimensions.get("window").height;
 	const openOriginalArticle = async () =>
 		await WebBrowser.openBrowserAsync(article.url);
 
@@ -27,29 +22,34 @@ export default function ImageArticle({
 				style={{ height: "100%" }}
 			>
 				{article.images.map((image, index) => (
-					<View key={index}>
+					<View key={index} style={{width: "100%", height: "100%"}}>
 						<ImageBackground
 							source={{ uri: image }}
-							style={{ height: "100%", width: "100%" }}
+							style={{
+								width: windowWidth,
+								height: windowHeight - 50,
+							}}
 						>
 							<View style={styles.readMoreButtonContainer}>
-								<Button
-									title="Read More"
+								<AppButton
+									title="View More"
 									onPress={openOriginalArticle}
-									color={"purple"}
+									style={{}}
 								/>
 							</View>
 						</ImageBackground>
 					</View>
 				))}
 			</PagerView>
+
 		</SafeAreaView>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		width: "100%",
+		height: "100%"
 	},
 	readMoreButtonContainer: {
 		position: "absolute",

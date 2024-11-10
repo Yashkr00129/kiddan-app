@@ -6,6 +6,22 @@ import axios from "axios";
 import {useEffect, useRef} from "react";
 import * as Notifications from "expo-notifications";
 
+import {
+	OpenSans_300Light,
+	OpenSans_300Light_Italic,
+	OpenSans_400Regular,
+	OpenSans_400Regular_Italic,
+	OpenSans_500Medium,
+	OpenSans_500Medium_Italic,
+	OpenSans_600SemiBold,
+	OpenSans_600SemiBold_Italic,
+	OpenSans_700Bold,
+	OpenSans_700Bold_Italic,
+	OpenSans_800ExtraBold,
+	OpenSans_800ExtraBold_Italic,
+	useFonts,
+} from '@expo-google-fonts/open-sans';
+
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
 		shouldShowAlert: true,
@@ -15,8 +31,22 @@ Notifications.setNotificationHandler({
 });
 
 export default function TabLayout() {
+	let [fontsLoaded] = useFonts({
+		OpenSans_300Light,
+		OpenSans_400Regular,
+		OpenSans_500Medium,
+		OpenSans_600SemiBold,
+		OpenSans_700Bold,
+		OpenSans_800ExtraBold,
+		OpenSans_300Light_Italic,
+		OpenSans_400Regular_Italic,
+		OpenSans_500Medium_Italic,
+		OpenSans_600SemiBold_Italic,
+		OpenSans_700Bold_Italic,
+		OpenSans_800ExtraBold_Italic,
+	});
 	// axios.defaults.baseURL = "https://b7fpgqz9cr.ap-south-1.awsapprunner.com";
-	axios.defaults.baseURL = "http://192.168.60.24:3000/";
+	axios.defaults.baseURL = "http://192.168.60.23:3000/";
 	const responseListener = useRef<Notifications.Subscription>();
 
 	const lastNotificationResponse = Notifications.useLastNotificationResponse();
@@ -36,6 +66,8 @@ export default function TabLayout() {
 			router.push(notificationData.link);
 		}
 	}
+
+	if (!fontsLoaded) return ""
 
 	return (
 		<>

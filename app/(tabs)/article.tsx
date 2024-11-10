@@ -17,6 +17,7 @@ export default function FeedScreen() {
 	};
 
 
+
 	useLayoutEffect(() => {
 		const api_url = params.topic
 			? `/api/article?topic=${params.topic}`

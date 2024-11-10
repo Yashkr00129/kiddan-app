@@ -1,25 +1,21 @@
-import { useVideoPlayer, VideoView } from "expo-video";
-import { useEffect, useRef, useState } from "react";
-import {
-	StyleSheet,
-	View,
-	Text,
-	Touchable,
-	TouchableOpacity,
-	Dimensions,
-	Pressable,
-} from "react-native";
+import {useVideoPlayer, VideoView} from "expo-video";
+import React, {useEffect, useRef, useState} from "react";
+import {Dimensions, Pressable, StyleSheet, Text, View,} from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { usePathname } from "expo-router";
+import {usePathname} from "expo-router";
+import AppButton from "@/components/ui/AppButton";
+import * as WebBrowser from "expo-web-browser";
 
 export default function VideoArticle({
 	videoSource,
 	index,
 	currentIndex,
+	                                     articleUrl = ""
 }: {
 	videoSource: string;
 	index: number;
 	currentIndex: number;
+	articleUrl?: string
 }) {
 	const pathname = usePathname();
 	const windowWidth = Dimensions.get("window").width;
@@ -59,6 +55,9 @@ export default function VideoArticle({
 		else player.pause();
 	}, [currentIndex]);
 
+	const openOriginalArticle = async () =>
+		await WebBrowser.openBrowserAsync(articleUrl);
+
 	return (
 		<Pressable
 			style={{ width: "100%", height: "100%" }}
@@ -84,6 +83,17 @@ export default function VideoArticle({
 				{!isPlaying && (
 					<MaterialCommunityIcons name="play" size={80} color="white" />
 				)}
+				{articleUrl && (
+					<View style={styles.readMoreButtonContainer}>
+						<AppButton
+							title="View more"
+							style={{
+								backgroundColor: "purple"
+							}}
+							onPress={openOriginalArticle}
+						/>
+					</View>
+				)}
 			</View>
 			<VideoView
 				ref={videoRef}
@@ -97,6 +107,7 @@ export default function VideoArticle({
 				allowsPictureInPicture={false}
 				nativeControls={false}
 			/>
+
 		</Pressable>
 	);
 }
@@ -104,5 +115,14 @@ export default function VideoArticle({
 const styles = StyleSheet.create({
 	controlsContainer: {
 		padding: 10,
+	},
+	readMoreButtonContainer: {
+		position: "absolute",
+		bottom: 0,
+		padding: 20,
+		margin: "auto",
+		alignSelf: "center",
+		width: 200,
+		zIndex: 20
 	},
 });

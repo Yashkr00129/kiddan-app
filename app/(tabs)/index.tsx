@@ -49,16 +49,16 @@ export default function ExploreScreen() {
 		<View style={styles.container}>
 			<View style={styles.header}>
 				<Text style={styles.headingLarge}>Featured Stories</Text>
-				<View
-					style={{
-						flexDirection: "row",
-						alignItems: "center",
-						gap: 5,
-					}}
-				>
-					<Text style={styles.headingSmall}>MY FEED</Text>
-					<MaterialCommunityIcons name="arrow-right" size={24} color="purple" />
-				</View>
+				{/*<View*/}
+				{/*	style={{*/}
+				{/*		flexDirection: "row",*/}
+				{/*		alignItems: "center",*/}
+				{/*		gap: 5,*/}
+				{/*	}}*/}
+				{/*>*/}
+				{/*	<Text style={styles.headingSmall}>MY FEED</Text>*/}
+				{/*	<MaterialCommunityIcons name="arrow-right" size={24} color="purple" />*/}
+				{/*</View>*/}
 			</View>
 
 			<ScrollView
