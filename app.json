@@ -38,13 +38,7 @@
 					"defaultChannel": "default"
 				}
 			],
-			"expo-video",
-			[
-				"expo-font",
-				{
-					"fonts": ["node_modules/@expo-google-fonts/inter/OpenSans_300Light.ttf"]
-				}
-			]
+			"expo-video"
 		],
 		"experiments": {
 			"typedRoutes": true
