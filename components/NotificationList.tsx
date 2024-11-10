@@ -98,6 +98,5 @@ const styles = StyleSheet.create({
     notificationText: {
         fontSize: 16,
         paddingTop: 10,
-        fontFamily:"OpenSans_600SemiBold"
     },
 });

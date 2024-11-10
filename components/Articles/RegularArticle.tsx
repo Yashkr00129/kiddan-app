@@ -1,13 +1,12 @@
 import {Dimensions, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 
 import React from "react";
-import Feather from "@expo/vector-icons/Feather";
 
 import * as WebBrowser from "expo-web-browser";
 
 import {SwiperFlatList} from "react-native-swiper-flatlist";
+import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
-import {OpenSans_500Medium, OpenSans_700Bold} from "@expo-google-fonts/open-sans";
 
 export default function RegularArticle({
 	article,
@@ -48,22 +47,21 @@ export default function RegularArticle({
 						</Text>
 					</View>
 
-					<Feather name="share-2" size={30} color="purple" />
 				</View>
 				<View style={{flexDirection: "row", gap: 10, marginVertical: 10}}>
-					<Text style={{color: "purple", fontSize: 16, fontWeight: "semibold"}}>
+					<AppText style={{color: "purple", fontSize: 16, fontWeight: "semibold"}}>
 						{new Date(article.createdAt).toDateString()}
-					</Text>
+					</AppText>
 
-					<Text style={{color: "purple", fontSize: 16, fontWeight: "semibold"}}>
+					<AppText style={{color: "purple", fontSize: 16, fontWeight: "semibold"}}>
 						{new Date(article.createdAt).toLocaleTimeString()}
-					</Text>
+					</AppText>
 				</View>
 				<Text style={styles.heading}>{article.title}</Text>
 				<SwiperFlatList
 					// index={1}
 					showPagination
-					paginationStyleItem={{ width: 10, height: 10, marginTop: 20 }}
+					paginationStyleItem={{width: 10, height: 10, marginTop: 30}}
 					paginationStyleItemActive={{ backgroundColor: "purple" }}
 					data={descriptionList}
 					renderItem={({ item: text }) => (
@@ -113,13 +111,11 @@ const styles = StyleSheet.create({
 	heading: {
 		fontSize: 20,
 		fontWeight: "600",
-		fontFamily:"OpenSans_600SemiBold"
 	},
 	articleText: {
 		fontSize: 18,
 		paddingTop: 5,
 		lineHeight: 24,
-		fontFamily: 'OpenSans_400Regular',
 		letterSpacing: 1
 		// backgroundColor: "teal",
 	},
@@ -149,7 +145,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	swiperFlatlistChild: {
-		maxHeight: 175,
+		minHeight: 175,
 		width: width - 40,
 		justifyContent: "flex-start",
 		alignItems: "flex-start",
@@ -157,7 +153,7 @@ const styles = StyleSheet.create({
 	readMoreButtonContainer: {
 		position: "absolute",
 		bottom: 0,
-		padding: 20,
+		padding: 40,
 		margin: "auto",
 		alignSelf: "center",
 		width: 200,
