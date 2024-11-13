@@ -1,19 +1,35 @@
-import {Dimensions, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
-
+import {
+	Dimensions,
+	Image,
+	SafeAreaView,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+} from "react-native";
+import { SwiperFlatList } from "react-native-swiper-flatlist";
 import React from "react";
 
 import * as WebBrowser from "expo-web-browser";
-
-import {SwiperFlatList} from "react-native-swiper-flatlist";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
+import {
+	splitByCharacterCount,
+	splitByWordCount,
+} from "../../utils/splitByWordCount";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function RegularArticle({
 	article,
 }: {
 	article: ArticleWithPopulatedTopic;
 }) {
-	const descriptionList = splitString(article.description);
+	const windowHeight = Dimensions.get("window").height;
+
+	const descriptionList = splitByWordCount(article.description, 70);
+
+	if (article.title.startsWith("")) {
+	}
 
 	const openOriginalArticle = async () =>
 		await WebBrowser.openBrowserAsync(article.url);
@@ -21,9 +37,16 @@ export default function RegularArticle({
 	const openKiddaan = async () => {
 		await WebBrowser.openBrowserAsync("http://kiddaan.com");
 	};
+	const { top, bottom } = useSafeAreaInsets();
 
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView
+			style={{
+				width: "100%",
+				height: windowHeight - top - bottom,
+				// maxHeight: windowHeight - top - bottom,
+			}}
+		>
 			<Image
 				source={{
 					uri: article.images[0],
@@ -39,44 +62,52 @@ export default function RegularArticle({
 			</View>
 
 			<View style={{ padding: 20 }}>
-				<View style={styles.controls}>
-					<View style={styles.topic}>
-						<Text style={{ color: "white" }}>
-							{" "}
-							{article.topics[0]?.title || ""}
-						</Text>
-					</View>
+				{/*<View style={styles.controls}>*/}
+				{/*	<View style={styles.topic}>*/}
+				{/*		<Text style={{ color: "white" }}>*/}
+				{/*			{" "}*/}
+				{/*			{article.topics[0]?.title || ""}*/}
+				{/*		</Text>*/}
+				{/*	</View>*/}
 
-				</View>
-				<View style={{flexDirection: "row", gap: 10, marginVertical: 10}}>
-					<AppText style={{color: "purple", fontSize: 16, fontWeight: "semibold"}}>
+				{/*</View>*/}
+				<View style={{ flexDirection: "row", gap: 10, marginVertical: 10 }}>
+					<AppText
+						style={{ color: "purple", fontSize: 13, fontWeight: "semibold" }}
+					>
 						{new Date(article.createdAt).toDateString()}
 					</AppText>
 
-					<AppText style={{color: "purple", fontSize: 16, fontWeight: "semibold"}}>
+					<AppText
+						style={{ color: "purple", fontSize: 13, fontWeight: "semibold" }}
+					>
 						{new Date(article.createdAt).toLocaleTimeString()}
 					</AppText>
 				</View>
 				<Text style={styles.heading}>{article.title}</Text>
-				<SwiperFlatList
-					// index={1}
-					showPagination
-					paginationStyleItem={{width: 10, height: 10, marginTop: 30}}
-					paginationStyleItemActive={{ backgroundColor: "purple" }}
-					data={descriptionList}
-					renderItem={({ item: text }) => (
-						<View style={styles.swiperFlatlistChild}>
-							<Text style={styles.articleText}>{text}</Text>
-						</View>
-					)}
-				/>
+				{descriptionList.length === 1 ? (
+					<Text style={styles.articleText}>{descriptionList[0]}</Text>
+				) : (
+					<SwiperFlatList
+						// index={1}
+						showPagination
+						paginationStyleItem={{ width: 10, height: 10, marginTop: 30 }}
+						paginationStyleItemActive={{ backgroundColor: "purple" }}
+						data={descriptionList}
+						renderItem={({ item: text }) => (
+							<View style={styles.swiperFlatlistChild}>
+								<Text style={styles.articleText}>{text}</Text>
+							</View>
+						)}
+					/>
+				)}
 			</View>
 			{article.url && (
 				<View style={styles.readMoreButtonContainer}>
 					<AppButton
 						title="Read More"
 						style={{
-							backgroundColor: "purple"
+							backgroundColor: "purple",
 						}}
 						onPress={openOriginalArticle}
 					/>
@@ -89,12 +120,8 @@ export default function RegularArticle({
 const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
 	image: {
-		height: 320,
+		height: 300,
 		width: "100%",
-	},
-	container: {
-		width: "100%",
-		height: "100%",
 	},
 	page: {
 		justifyContent: "center",
@@ -109,23 +136,26 @@ const styles = StyleSheet.create({
 		gap: 10,
 	},
 	heading: {
-		fontSize: 20,
+		fontSize: 17,
 		fontWeight: "600",
 	},
 	articleText: {
-		fontSize: 18,
+		fontSize: 17,
 		paddingTop: 5,
 		lineHeight: 24,
-		letterSpacing: 1
+		// letterSpacing: 0,
+		fontFamily: "Roboto-Regular",
+		// fontS
 		// backgroundColor: "teal",
 	},
 	brandingContainer: {
 		position: "absolute",
 		top: 310,
 		flexDirection: "row",
-		justifyContent: "center",
+		justifyContent: "flex-end",
 		alignItems: "center",
 		width: "100%",
+		paddingHorizontal: 30,
 	},
 	branding: {
 		backgroundColor: "white",
@@ -135,7 +165,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 15,
 		borderRadius: 10,
 	},
-	brandingText: { color: "purple" },
+	brandingText: { color: "purple", fontWeight: "600" },
 	topic: {
 		backgroundColor: "purple",
 		padding: 5,
@@ -146,20 +176,16 @@ const styles = StyleSheet.create({
 	},
 	swiperFlatlistChild: {
 		minHeight: 175,
-		width: width - 40,
+		width: width - 35,
 		justifyContent: "flex-start",
 		alignItems: "flex-start",
+		maxHeight: 200,
 	},
 	readMoreButtonContainer: {
-		position: "absolute",
-		bottom: 0,
-		padding: 40,
-		margin: "auto",
+		padding: 30,
+
+		marginVertical: "auto",
 		alignSelf: "center",
 		width: 200,
 	},
 });
-
-function splitString(text: string): string[] {
-	return text.split("\n").filter((item) => item !== "");
-}

@@ -1,11 +1,10 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {router, Tabs} from "expo-router";
+import { router, Tabs } from "expo-router";
 import Head from "expo-router/head";
 
 import axios from "axios";
-import {useEffect} from "react";
+import { useEffect } from "react";
 import * as Notifications from "expo-notifications";
-
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -16,27 +15,31 @@ Notifications.setNotificationHandler({
 });
 
 export default function TabLayout() {
-
-	// axios.defaults.baseURL = "https://b7fpgqz9cr.ap-south-1.awsapprunner.com";
-	axios.defaults.baseURL = "http://192.168.60.23:3000/";
+	axios.defaults.baseURL = "https://b7fpgqz9cr.ap-south-1.awsapprunner.com";
+	// axios.defaults.baseURL = "http://192.168.60.23:3000/";
 
 	const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
 	useEffect(() => {
-		if (lastNotificationResponse && lastNotificationResponse.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER) {
+		if (
+			lastNotificationResponse &&
+			lastNotificationResponse.actionIdentifier ===
+				Notifications.DEFAULT_ACTION_IDENTIFIER
+		) {
 			handlePush(lastNotificationResponse);
 		}
 	}, [lastNotificationResponse]);
 
-	const handlePush = async ({notification}: Notifications.NotificationResponse) => {
+	const handlePush = async ({
+		notification,
+	}: Notifications.NotificationResponse) => {
 		console.log(notification);
 		const notificationData = notification.request.content.data;
-
 
 		if (notificationData.type === "link") {
 			router.push(notificationData.link);
 		}
-	}
+	};
 
 	return (
 		<>
@@ -52,7 +55,7 @@ export default function TabLayout() {
 					tabBarActiveTintColor: "purple",
 					headerShown: false,
 					tabBarStyle: {
-						height: 50,
+						height: 40,
 					},
 				}}
 			>
@@ -60,6 +63,7 @@ export default function TabLayout() {
 					name="index"
 					options={{
 						title: "Explore",
+
 						tabBarIcon: ({ color }) => (
 							<FontAwesome size={28} name="search" color={color} />
 						),
@@ -68,7 +72,7 @@ export default function TabLayout() {
 				<Tabs.Screen
 					name="article"
 					options={{
-						title: "Articles",
+						title: "Home",
 						tabBarIcon: ({ color }) => (
 							<FontAwesome size={28} name="home" color={color} />
 						),

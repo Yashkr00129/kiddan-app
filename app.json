@@ -38,7 +38,13 @@
 					"defaultChannel": "default"
 				}
 			],
-			"expo-video"
+			"expo-video",
+			[
+				"expo-font",
+				{
+					"fonts": ["./assets/fonts/Roboto-Regular.ttf"]
+				}
+			]
 		],
 		"experiments": {
 			"typedRoutes": true

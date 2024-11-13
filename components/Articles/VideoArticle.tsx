@@ -1,21 +1,22 @@
-import {useVideoPlayer, VideoView} from "expo-video";
-import React, {useEffect, useRef, useState} from "react";
-import {Dimensions, Pressable, StyleSheet, Text, View,} from "react-native";
+import { useVideoPlayer, VideoView } from "expo-video";
+import React, { useEffect, useRef, useState } from "react";
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import {usePathname} from "expo-router";
+import { usePathname } from "expo-router";
 import AppButton from "@/components/ui/AppButton";
 import * as WebBrowser from "expo-web-browser";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function VideoArticle({
 	videoSource,
 	index,
 	currentIndex,
-	                                     articleUrl = ""
+	articleUrl = "",
 }: {
 	videoSource: string;
 	index: number;
 	currentIndex: number;
-	articleUrl?: string
+	articleUrl?: string;
 }) {
 	const pathname = usePathname();
 	const windowWidth = Dimensions.get("window").width;
@@ -28,6 +29,8 @@ export default function VideoArticle({
 	});
 
 	const videoArticlePathname = "/article";
+
+	const { bottom, top } = useSafeAreaInsets();
 
 	useEffect(() => {
 		const subscription = player.addListener(
@@ -68,7 +71,8 @@ export default function VideoArticle({
 				style={[
 					{
 						width: windowWidth,
-						height: windowHeight - 50,
+						height: windowHeight - top - bottom,
+						maxHeight: windowHeight - top - bottom,
 						zIndex: 10,
 						position: "absolute",
 						top: 0,
@@ -88,7 +92,7 @@ export default function VideoArticle({
 						<AppButton
 							title="View more"
 							style={{
-								backgroundColor: "purple"
+								backgroundColor: "purple",
 							}}
 							onPress={openOriginalArticle}
 						/>
@@ -99,7 +103,7 @@ export default function VideoArticle({
 				ref={videoRef}
 				style={{
 					width: windowWidth,
-					height: windowHeight - 50,
+					height: windowHeight - top - bottom,
 				}}
 				contentFit="cover"
 				player={player}
@@ -107,7 +111,6 @@ export default function VideoArticle({
 				allowsPictureInPicture={false}
 				nativeControls={false}
 			/>
-
 		</Pressable>
 	);
 }
@@ -123,6 +126,6 @@ const styles = StyleSheet.create({
 		margin: "auto",
 		alignSelf: "center",
 		width: 200,
-		zIndex: 20
+		zIndex: 20,
 	},
 });

@@ -48,7 +48,7 @@ export default function ExploreScreen() {
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
-				<Text style={styles.headingLarge}>Featured Stories</Text>
+				{/* <Text style={styles.headingLarge}>Featured Stories</Text> */}
 				{/*<View*/}
 				{/*	style={{*/}
 				{/*		flexDirection: "row",*/}
