@@ -1,4 +1,10 @@
-import {Dimensions, ImageBackground, SafeAreaView, StyleSheet, View,} from "react-native";
+import {
+	Dimensions,
+	ImageBackground,
+	SafeAreaView,
+	StyleSheet,
+	View,
+} from "react-native";
 import React from "react";
 import PagerView from "react-native-pager-view";
 import * as WebBrowser from "expo-web-browser";
@@ -9,8 +15,8 @@ export default function ImageArticle({
 }: {
 	article: ArticleWithPopulatedTopic;
 }) {
-	const windowWidth = Dimensions.get("window").width;
-	const windowHeight = Dimensions.get("window").height;
+	const windowWidth = Dimensions.get("screen").width;
+	const windowHeight = Dimensions.get("screen").height;
 	const openOriginalArticle = async () =>
 		await WebBrowser.openBrowserAsync(article.url);
 
@@ -19,10 +25,10 @@ export default function ImageArticle({
 			<PagerView
 				orientation={"horizontal"}
 				initialPage={0}
-				style={{ height: "100%" }}
+				style={{ height: windowHeight - 40 }}
 			>
 				{article.images.map((image, index) => (
-					<View key={index} style={{width: "100%", height: "100%"}}>
+					<View key={index} style={{ width: "100%", height: "100%" }}>
 						<ImageBackground
 							source={{ uri: image }}
 							style={{
@@ -41,7 +47,6 @@ export default function ImageArticle({
 					</View>
 				))}
 			</PagerView>
-
 		</SafeAreaView>
 	);
 }
@@ -49,7 +54,7 @@ export default function ImageArticle({
 const styles = StyleSheet.create({
 	container: {
 		width: "100%",
-		height: "100%"
+		height: "100%",
 	},
 	readMoreButtonContainer: {
 		position: "absolute",

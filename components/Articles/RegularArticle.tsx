@@ -24,8 +24,6 @@ export default function RegularArticle({
 }: {
 	article: ArticleWithPopulatedTopic;
 }) {
-	const windowHeight = Dimensions.get("window").height;
-
 	const descriptionList = splitByWordCount(article.description, 70);
 
 	if (article.title.startsWith("")) {
@@ -37,14 +35,12 @@ export default function RegularArticle({
 	const openKiddaan = async () => {
 		await WebBrowser.openBrowserAsync("http://kiddaan.com");
 	};
-	const { top, bottom } = useSafeAreaInsets();
 
 	return (
 		<SafeAreaView
 			style={{
 				width: "100%",
-				height: windowHeight - top - bottom,
-				// maxHeight: windowHeight - top - bottom,
+				height: Dimensions.get("screen").height,
 			}}
 		>
 			<Image
@@ -62,15 +58,6 @@ export default function RegularArticle({
 			</View>
 
 			<View style={{ padding: 20 }}>
-				{/*<View style={styles.controls}>*/}
-				{/*	<View style={styles.topic}>*/}
-				{/*		<Text style={{ color: "white" }}>*/}
-				{/*			{" "}*/}
-				{/*			{article.topics[0]?.title || ""}*/}
-				{/*		</Text>*/}
-				{/*	</View>*/}
-
-				{/*</View>*/}
 				<View style={{ flexDirection: "row", gap: 10, marginVertical: 10 }}>
 					<AppText
 						style={{ color: "purple", fontSize: 13, fontWeight: "semibold" }}
@@ -184,7 +171,7 @@ const styles = StyleSheet.create({
 	readMoreButtonContainer: {
 		padding: 30,
 
-		marginVertical: "auto",
+		marginVertical: 20,
 		alignSelf: "center",
 		width: 200,
 	},

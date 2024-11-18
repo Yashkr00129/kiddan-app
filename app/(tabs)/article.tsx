@@ -1,5 +1,12 @@
-import { ActivityIndicator, StyleSheet, View } from "react-native";
-import React, { useLayoutEffect, useState } from "react";
+import {
+	ActivityIndicator,
+	Dimensions,
+	Platform,
+	SafeAreaView,
+	StyleSheet,
+	View,
+} from "react-native";
+import React, { useCallback, useLayoutEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 
 import Article from "@/components/Article";
@@ -11,6 +18,8 @@ export default function FeedScreen() {
 	const [articles, setArticles] = useState<ArticleWithPopulatedTopic[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [currentIndex, setCurrentIndex] = useState(0);
+
+	const { height, width } = Dimensions.get("screen");
 
 	const handleChangeIndexValue = ({ index }: { index: number }) => {
 		setCurrentIndex(index);
@@ -27,6 +36,7 @@ export default function FeedScreen() {
 			.then((response) => {
 				if (!params.articleId) {
 					setArticles(response.data);
+					console.log([...response.data].reverse().length);
 				} else {
 					const articles = response.data as ArticleWithPopulatedTopic[];
 					const articleToBeFirstIndex = articles.findIndex(
@@ -46,32 +56,62 @@ export default function FeedScreen() {
 			.finally(() => setLoading(false));
 	}, [params.topic, params.articleId]);
 
+	const renderItem = useCallback(
+		({ item: article, index }: any) => (
+			<View
+				style={[
+					{
+						flex: 1,
+					},
+					{ height, width },
+				]}
+			>
+				<Article
+					key={article._id}
+					article={article}
+					index={index}
+					currentIndex={currentIndex}
+				/>
+			</View>
+		),
+		[height, width, currentIndex]
+	);
+
 	if (loading) return <ActivityIndicator />;
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView
+			style={{
+				height: height,
+				width: width,
+			}}
+		>
 			<SwiperFlatList
 				vertical={true}
+				windowSize={100}
+				initialNumToRender={3}
+				maxToRenderPerBatch={5}
+				removeClippedSubviews={Platform.OS === "android"}
 				onChangeIndex={handleChangeIndexValue}
 				data={articles}
-				renderItem={({ item: article, index }) => (
-					<Article
-						key={index}
-						article={article}
-						index={index}
-						currentIndex={currentIndex}
-					/>
-				)}
+				snapToInterval={height}
+				decelerationRate="normal"
+				bounces={false}
+				renderItem={renderItem}
 				keyExtractor={(item, index) => `${index}`}
+				viewabilityConfig={{
+					itemVisiblePercentThreshold: 50,
+				}}
+				contentContainerStyle={styles.listContent}
 			/>
-		</View>
+		</SafeAreaView>
 	);
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
+	// container: {
+	// 	flex: ,
+	// },
 	pagerView: {
 		width: "100%",
 		height: "100%",
@@ -79,5 +119,9 @@ const styles = StyleSheet.create({
 	page: {
 		justifyContent: "center",
 		alignItems: "center",
+	},
+	listContent: {
+		// This ensures the last item is fully scrollable
+		flexGrow: 1,
 	},
 });

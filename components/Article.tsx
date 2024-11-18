@@ -2,8 +2,9 @@ import React from "react";
 import VideoArticle from "./Articles/VideoArticle";
 import ImageArticle from "./Articles/ImageArticle";
 import RegularArticle from "./Articles/RegularArticle";
-import { Dimensions, View } from "react-native";
+import { Dimensions, SafeAreaView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 export default function Article({
 	article,
@@ -14,24 +15,40 @@ export default function Article({
 	index: number;
 	currentIndex: number;
 }) {
-	const windowWidth = Dimensions.get("window").width;
+	const windowWidth = Dimensions.get("screen").width;
 	const windowHeight = Dimensions.get("window").height;
+	const bottomTabBarHeight = useBottomTabBarHeight();
 
 	const { bottom, top } = useSafeAreaInsets();
 
+	if (article.type === "Image Carousel")
+		return <ImageArticle article={article} />;
+	if (article.type == "Video Carousel")
+		return (
+			<VideoArticle
+				videoSource={article.images[0]}
+				index={index}
+				currentIndex={currentIndex}
+				articleUrl={article.url}
+			/>
+		);
+
+	if (article.type == "Regular") return <RegularArticle article={article} />;
+	if (article.type == "Image Carousel")
+		return <ImageArticle article={article} />;
+
 	return (
-		<View
+		<SafeAreaView
 			style={{
-				width: windowWidth,
-				height: windowHeight - bottom - top,
-				maxHeight: windowHeight - bottom - top,
-				flex: 1,
-				position: "relative",
-				justifyContent: "center",
-				alignItems: "center",
+				// height: `calc(100%) - ${bottomTabBarHeight}`,
+				height: windowHeight - bottomTabBarHeight,
+				// backgroundColor: "lightblue",
+				// position: "relative",
+				// justifyContent: "center",
+				// alignItems: "center",
 			}}
 		>
-			{article.type === "Image Carousel" && <ImageArticle article={article} />}
+			{/* {article.type === "Image Carousel" && <ImageArticle article={article} />}
 			{article.type === "Video Carousel" && (
 				<VideoArticle
 					videoSource={article.images[0]}
@@ -39,8 +56,8 @@ export default function Article({
 					currentIndex={currentIndex}
 					articleUrl={article.url}
 				/>
-			)}
-			{article.type === "Regular" && <RegularArticle article={article} />}
-		</View>
+			)} */}
+			{/* {article.type === "Regular" && <RegularArticle article={article} />} */}
+		</SafeAreaView>
 	);
 }
