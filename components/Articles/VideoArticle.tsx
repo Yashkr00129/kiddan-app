@@ -1,4 +1,4 @@
-import { useVideoPlayer, VideoView } from "expo-video";
+import { useVideoPlayer, VideoPlayer, VideoView } from "expo-video";
 import React, { useEffect, useRef, useState } from "react";
 import {
 	Dimensions,
@@ -14,6 +14,7 @@ import AppButton from "@/components/ui/AppButton";
 import * as WebBrowser from "expo-web-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import Octicons from "@expo/vector-icons/Octicons";
 
 export default function VideoArticle({
 	videoSource,
@@ -31,8 +32,10 @@ export default function VideoArticle({
 	const windowHeight = Dimensions.get("screen").height;
 	const videoRef = useRef(null);
 	const [isPlaying, setIsPlaying] = useState(true);
-	const player = useVideoPlayer(videoSource, (player: any) => {
+	const player = useVideoPlayer(videoSource, (player: VideoPlayer) => {
 		player.loop = true;
+		player.muted = true;
+
 		if (index === currentIndex) player.play();
 	});
 
@@ -72,6 +75,27 @@ export default function VideoArticle({
 
 	console.log("Window height from video article - ", windowHeight);
 
+	const [muted, setMuted] = useState(false);
+	const [showUnmuteIcon, setShowUnmuteIcon] = useState(false);
+	const [showMutedIcon, setShowMutedIcon] = useState(false);
+
+	useEffect(() => {
+		if (muted) {
+			setShowUnmuteIcon(false);
+			setShowMutedIcon(true);
+			setTimeout(() => {
+				setShowMutedIcon(false);
+			}, 2000);
+		} else {
+			setShowMutedIcon(false);
+			setShowUnmuteIcon(true);
+			setTimeout(() => {
+				setShowUnmuteIcon(false);
+			}, 2000);
+		}
+		player.muted = muted;
+	}, [muted]);
+
 	return (
 		<Pressable
 			style={{
@@ -81,6 +105,9 @@ export default function VideoArticle({
 				position: "relative",
 			}}
 			onLongPress={() => player.pause()}
+			onPress={() => {
+				setMuted(!muted);
+			}}
 			onPressOut={() => player.play()}
 		>
 			<SafeAreaView
@@ -111,8 +138,32 @@ export default function VideoArticle({
 					{!isPlaying && (
 						<MaterialCommunityIcons name="play" size={80} color="white" />
 					)}
-					{articleUrl && (
-						<View style={styles.readMoreButtonContainer}>
+					{(showMutedIcon || showUnmuteIcon) && (
+						<View
+							style={{
+								position: "absolute",
+								top: 20,
+								backgroundColor: "rgba(255,255,255,0.32)",
+								padding: 8,
+								paddingHorizontal:20,
+								borderRadius:10
+							}}
+						>
+							{showUnmuteIcon && (
+								<View style={{flexDirection:"row",gap:8 ,}}>
+									<Octicons name="unmute" size={20} color="white" /><Text style={{color: "white"}}>Unmute</Text>
+								</View>
+							)}
+							{showMutedIcon && (
+								<View style={{flexDirection:"row",gap:8 ,}}>
+									<Octicons name="mute" size={20} color="white" /><Text style={{color: "white"}}>Mute</Text>
+								</View>
+							)}
+						</View>
+					)}
+
+					<View style={styles.readMoreButtonContainer}>
+						{articleUrl && (
 							<AppButton
 								title="View more"
 								style={{
@@ -120,8 +171,8 @@ export default function VideoArticle({
 								}}
 								onPress={openOriginalArticle}
 							/>
-						</View>
-					)}
+						)}
+					</View>
 				</View>
 				<VideoView
 					ref={videoRef}

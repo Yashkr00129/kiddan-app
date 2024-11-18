@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
 	},
 	brandingContainer: {
 		position: "absolute",
-		top: 310,
+		top: 290,
 		flexDirection: "row",
 		justifyContent: "flex-end",
 		alignItems: "center",
