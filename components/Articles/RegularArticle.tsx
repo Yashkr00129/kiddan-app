@@ -13,18 +13,14 @@ import React from "react";
 import * as WebBrowser from "expo-web-browser";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
-import {
-	splitByCharacterCount,
-	splitByWordCount,
-} from "../../utils/splitByWordCount";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function RegularArticle({
 	article,
 }: {
 	article: ArticleWithPopulatedTopic;
 }) {
-	const descriptionList = splitByWordCount(article.description, 70);
+	console.log(article.contents);
+	// const descriptionList = splitByWordCount(article.description, 70);
 
 	if (article.title.startsWith("")) {
 	}
@@ -72,15 +68,15 @@ export default function RegularArticle({
 					</AppText>
 				</View>
 				<Text style={styles.heading}>{article.title}</Text>
-				{descriptionList.length === 1 ? (
-					<Text style={styles.articleText}>{descriptionList[0]}</Text>
+				{article.contents && article.contents.length === 1 ? (
+					<Text style={styles.articleText}>{article.contents[0]}</Text>
 				) : (
 					<SwiperFlatList
 						// index={1}
 						showPagination
 						paginationStyleItem={{ width: 10, height: 10, marginTop: 30 }}
 						paginationStyleItemActive={{ backgroundColor: "purple" }}
-						data={descriptionList}
+						data={article.contents}
 						renderItem={({ item: text }) => (
 							<View style={styles.swiperFlatlistChild}>
 								<Text style={styles.articleText}>{text}</Text>

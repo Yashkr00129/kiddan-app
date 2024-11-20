@@ -2,7 +2,7 @@
 	"expo": {
 		"name": "Kiddaan News",
 		"slug": "kiddan-news",
-		"version": "1.0.0",
+		"version": "2.0.0",
 		"orientation": "portrait",
 		"icon": "./assets/images/kiddan_app_logo_android.jpg",
 		"scheme": "myapp",
@@ -21,6 +21,7 @@
 				"backgroundColor": "#ffffff"
 			},
 			"package": "com.yashkr00129.kiddannews",
+			"versionCode": 2,
 			"googleServicesFile": "./google-services.json"
 		},
 		"web": {

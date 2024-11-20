@@ -4,6 +4,7 @@ import {
 	StyleSheet,
 	ScrollView,
 	TouchableOpacity,
+	Image,
 } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FeaturedArticle from "@/components/FeaturedArticle";
@@ -12,6 +13,8 @@ import NotificationList from "@/components/NotificationList";
 import axios from "axios";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { router, useNavigation } from "expo-router";
+import AppLoader from "@/components/ui/AppLoader";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function ExploreScreen() {
 	const navigation = useNavigation();
@@ -20,45 +23,76 @@ export default function ExploreScreen() {
 	const [featuredArticles, setFeaturedArticles] = useState<
 		ArticleWithPopulatedTopic[]
 	>([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		navigation.setOptions({ headerShown: false });
 	}, [navigation]);
 
 	useLayoutEffect(() => {
-		axios
-			.get("/api/topic")
-			.then((response) => {
-				setTopics(response.data as Topic[]);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		const loadAllData = async () => {
+			await axios
+				.get("/api/topic")
+				.then((response) => {
+					setTopics(response.data as Topic[]);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 
-		axios
-			.get("/api/article?featured=true")
-			.then((response) => {
-				setFeaturedArticles(response.data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+			await axios
+				.get("/api/article?featured=true&limit=10")
+				.then((response) => {
+					setFeaturedArticles(response.data);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		};
+		setLoading(true);
+		loadAllData().then(() => setLoading(false));
 	}, []);
+
+	if (loading) return <AppLoader />;
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.header}>
-				{/* <Text style={styles.headingLarge}>Featured Stories</Text> */}
-				{/*<View*/}
-				{/*	style={{*/}
-				{/*		flexDirection: "row",*/}
-				{/*		alignItems: "center",*/}
-				{/*		gap: 5,*/}
-				{/*	}}*/}
-				{/*>*/}
-				{/*	<Text style={styles.headingSmall}>MY FEED</Text>*/}
-				{/*	<MaterialCommunityIcons name="arrow-right" size={24} color="purple" />*/}
-				{/*</View>*/}
+			<View
+				style={{
+					flexDirection: "row",
+					alignItems: "center",
+					justifyContent: "space-between",
+					gap: 10,
+				}}
+			>
+				<View
+					style={{
+						flexDirection: "row",
+						alignItems: "center",
+						gap: 10,
+					}}
+				>
+					<Image
+						source={require("@/assets/images/kiddaan_app_logo.jpg")}
+						style={{
+							height: 30,
+							width: 30,
+						}}
+					/>
+					<Text style={[styles.headingLarge, { color: "purple" }]}>
+						Kiddaan
+					</Text>
+				</View>
+				<View
+					style={{
+						flexDirection: "row",
+						alignItems: "center",
+						gap: 5,
+					}}
+				>
+					<Text style={styles.headingSmall}>MY FEED</Text>
+					<AntDesign name="arrowright" size={20} color="purple" />
+				</View>
 			</View>
 
 			<ScrollView

@@ -12,6 +12,7 @@ type ArticleWithPopulatedTopic = {
 	thumbnail: string;
 	topics: Topic[];
 	description: string;
+	contents: string[];
 	featured: boolean;
 	type: "Regular" | "Image Carousel" | "Video Carousel";
 	url: string;

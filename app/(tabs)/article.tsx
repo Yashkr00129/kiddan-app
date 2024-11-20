@@ -95,7 +95,7 @@ export default function FeedScreen() {
 				onChangeIndex={handleChangeIndexValue}
 				data={articles}
 				snapToInterval={height}
-				decelerationRate="normal"
+				decelerationRate="fast"
 				bounces={false}
 				renderItem={renderItem}
 				keyExtractor={(item, index) => `${index}`}

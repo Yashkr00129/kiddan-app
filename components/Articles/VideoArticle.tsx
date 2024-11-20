@@ -75,7 +75,7 @@ export default function VideoArticle({
 
 	console.log("Window height from video article - ", windowHeight);
 
-	const [muted, setMuted] = useState(false);
+	const [muted, setMuted] = useState(true);
 	const [showUnmuteIcon, setShowUnmuteIcon] = useState(false);
 	const [showMutedIcon, setShowMutedIcon] = useState(false);
 
@@ -145,18 +145,20 @@ export default function VideoArticle({
 								top: 20,
 								backgroundColor: "rgba(255,255,255,0.32)",
 								padding: 8,
-								paddingHorizontal:20,
-								borderRadius:10
+								paddingHorizontal: 20,
+								borderRadius: 10,
 							}}
 						>
 							{showUnmuteIcon && (
-								<View style={{flexDirection:"row",gap:8 ,}}>
-									<Octicons name="unmute" size={20} color="white" /><Text style={{color: "white"}}>Unmute</Text>
+								<View style={{ flexDirection: "row", gap: 8 }}>
+									<Octicons name="unmute" size={20} color="white" />
+									<Text style={{ color: "white" }}>Unmute</Text>
 								</View>
 							)}
 							{showMutedIcon && (
-								<View style={{flexDirection:"row",gap:8 ,}}>
-									<Octicons name="mute" size={20} color="white" /><Text style={{color: "white"}}>Mute</Text>
+								<View style={{ flexDirection: "row", gap: 8 }}>
+									<Octicons name="mute" size={20} color="white" />
+									<Text style={{ color: "white" }}>Mute</Text>
 								</View>
 							)}
 						</View>
