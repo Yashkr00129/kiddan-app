@@ -19,6 +19,7 @@ export default function RegularArticle({
 }: {
 	article: ArticleWithPopulatedTopic;
 }) {
+	const { height } = Dimensions.get("window");
 	// const descriptionList = splitByWordCount(article.description, 70);
 
 	if (article.title.startsWith("")) {
@@ -34,8 +35,7 @@ export default function RegularArticle({
 	return (
 		<SafeAreaView
 			style={{
-				width: "100%",
-				height: Dimensions.get("screen").height,
+				height: height - 40,
 			}}
 		>
 			<Image
@@ -52,7 +52,7 @@ export default function RegularArticle({
 				</TouchableOpacity>
 			</View>
 
-			<View style={{ padding: 20 }}>
+			<View style={{ padding: 20, paddingBottom: 0 }}>
 				<View style={{ flexDirection: "row", gap: 10, marginVertical: 10 }}>
 					<AppText
 						style={{ color: "purple", fontSize: 13, fontWeight: "semibold" }}
@@ -105,18 +105,7 @@ const styles = StyleSheet.create({
 		height: 300,
 		width: "100%",
 	},
-	page: {
-		justifyContent: "center",
-		alignItems: "center",
-	},
-	controls: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-	},
-	controlGroup: {
-		flexDirection: "row",
-		gap: 10,
-	},
+
 	heading: {
 		fontSize: 17,
 		fontWeight: "600",
@@ -165,7 +154,6 @@ const styles = StyleSheet.create({
 	},
 	readMoreButtonContainer: {
 		padding: 30,
-
 		marginVertical: 20,
 		alignSelf: "center",
 		width: 200,

@@ -29,7 +29,6 @@ export default function VideoArticle({
 }) {
 	const pathname = usePathname();
 	const windowWidth = Dimensions.get("screen").width;
-	const windowHeight = Dimensions.get("screen").height;
 	const videoRef = useRef(null);
 	const [isPlaying, setIsPlaying] = useState(true);
 	const player = useVideoPlayer(videoSource, (player: VideoPlayer) => {
@@ -41,8 +40,7 @@ export default function VideoArticle({
 
 	const videoArticlePathname = "/article";
 
-	const bottomTabBarHeight = useBottomTabBarHeight();
-	const { top } = useSafeAreaInsets();
+	const { height } = Dimensions.get("window");
 
 	useEffect(() => {
 		const subscription = player.addListener(
@@ -98,8 +96,6 @@ export default function VideoArticle({
 		<Pressable
 			style={{
 				width: "100%",
-				height: windowHeight,
-				maxHeight: windowHeight,
 				position: "relative",
 			}}
 			onLongPress={() => player.pause()}
@@ -108,86 +104,75 @@ export default function VideoArticle({
 			}}
 			onPressOut={() => player.play()}
 		>
-			<SafeAreaView
-				style={{
-					width: "100%",
-					height: Dimensions.get("screen").height - 100,
-					maxHeight: windowHeight,
-				}}
+			<View
+				style={[
+					{
+						width: "100%",
+						height: height - 40,
+						zIndex: 10,
+						position: "absolute",
+						top: 0,
+						justifyContent: "center",
+						alignItems: "center",
+					},
+					!isPlaying && {
+						backgroundColor: "#0000005d",
+					},
+				]}
 			>
-				<View
-					style={[
-						{
-							width: windowWidth,
-							height: "100%",
-							paddingTop: top,
-							zIndex: 10,
+				{!isPlaying && (
+					<MaterialCommunityIcons name="play" size={80} color="white" />
+				)}
+				{(showMutedIcon || showUnmuteIcon) && (
+					<View
+						style={{
 							position: "absolute",
-
-							top: 0,
-							justifyContent: "center",
-							alignItems: "center",
-						},
-						!isPlaying && {
-							backgroundColor: "#0000005d",
-						},
-					]}
-				>
-					{!isPlaying && (
-						<MaterialCommunityIcons name="play" size={80} color="white" />
-					)}
-					{(showMutedIcon || showUnmuteIcon) && (
-						<View
-							style={{
-								position: "absolute",
-								top: 20,
-								backgroundColor: "rgba(255,255,255,0.32)",
-								padding: 8,
-								paddingHorizontal: 20,
-								borderRadius: 10,
-							}}
-						>
-							{showUnmuteIcon && (
-								<View style={{ flexDirection: "row", gap: 8 }}>
-									<Octicons name="unmute" size={20} color="white" />
-									<Text style={{ color: "white" }}>Unmute</Text>
-								</View>
-							)}
-							{showMutedIcon && (
-								<View style={{ flexDirection: "row", gap: 8 }}>
-									<Octicons name="mute" size={20} color="white" />
-									<Text style={{ color: "white" }}>Mute</Text>
-								</View>
-							)}
-						</View>
-					)}
-					<View style={styles.readMoreButtonContainer}>
-						{articleUrl && (
-							<AppButton
-								title="View more"
-								style={{
-									backgroundColor: "purple",
-								}}
-								onPress={openOriginalArticle}
-							/>
+							top: 20,
+							backgroundColor: "rgba(255,255,255,0.32)",
+							padding: 8,
+							paddingHorizontal: 20,
+							borderRadius: 10,
+						}}
+					>
+						{showUnmuteIcon && (
+							<View style={{ flexDirection: "row", gap: 8 }}>
+								<Octicons name="unmute" size={20} color="white" />
+								<Text style={{ color: "white" }}>Unmute</Text>
+							</View>
+						)}
+						{showMutedIcon && (
+							<View style={{ flexDirection: "row", gap: 8 }}>
+								<Octicons name="mute" size={20} color="white" />
+								<Text style={{ color: "white" }}>Mute</Text>
+							</View>
 						)}
 					</View>
+				)}
+				<View style={styles.readMoreButtonContainer}>
+					{articleUrl && (
+						<AppButton
+							title="View more"
+							style={{
+								backgroundColor: "purple",
+							}}
+							onPress={openOriginalArticle}
+						/>
+					)}
 				</View>
-				<VideoView
-					ref={videoRef}
-					style={{
-						width: windowWidth,
-						height: windowHeight - 40,
-						maxHeight: windowHeight - 40,
-						position: "relative",
-					}}
-					contentFit="cover"
-					player={player}
-					allowsFullscreen={false}
-					allowsPictureInPicture={false}
-					nativeControls={false}
-				/>
-			</SafeAreaView>
+			</View>
+			<VideoView
+				ref={videoRef}
+				style={{
+					width: windowWidth,
+					height: height - 40,
+					position: "relative",
+				}}
+				contentFit="cover"
+				player={player}
+				allowsFullscreen={false}
+				allowsPictureInPicture={false}
+				nativeControls={false}
+			/>
 		</Pressable>
 	);
 }

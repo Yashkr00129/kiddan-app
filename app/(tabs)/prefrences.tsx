@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { StyleSheet, Text, View, Switch, Platform } from "react-native";
 
 import Constants from "expo-constants";
@@ -19,6 +19,8 @@ export default function PrefrencesPage() {
 	const [enableNotifications, setNotificationsEnabled] = useState(false);
 	const [disabled, setDisabled] = useState(false);
 
+	// enableNotifications should be set to true in a useEffect if the user  has already enabled notifications
+
 	async function handlePushNotificationRegistration() {
 		let token = await getExistingPushToken();
 
@@ -37,13 +39,15 @@ export default function PrefrencesPage() {
 			if (!Device.isDevice)
 				return alert("Must use physical device for Push Notifications");
 
-			const { status: existingStatus } =
+			const { status: existingStatus, canAskAgain } =
 				await Notifications.getPermissionsAsync();
 
 			let finalStatus = existingStatus;
+			console.log(canAskAgain);
 
 			if (existingStatus !== "granted") {
-				const { status } = await Notifications.requestPermissionsAsync();
+				const { status, canAskAgain } =
+					await Notifications.requestPermissionsAsync();
 				finalStatus = status;
 			}
 
@@ -55,12 +59,27 @@ export default function PrefrencesPage() {
 			await axios.post("/api/notification/add-push-token", { token });
 			setNotificationsEnabled(true);
 		} else {
+			await Notifications.unregisterForNotificationsAsync();
+
 			await axios.post("/api/notification/remove-push-token", { token });
 			setNotificationsEnabled(false);
 		}
 
 		setDisabled(false);
 	}
+
+	useLayoutEffect(() => {
+		const refetch = async () => {
+			const { status: existingStatus } =
+				await Notifications.getPermissionsAsync();
+			if (existingStatus == "granted") {
+				setNotificationsEnabled(true);
+			} else {
+				setNotificationsEnabled(false);
+			}
+		};
+		refetch();
+	}, []);
 
 	return (
 		<View style={styles.container}>

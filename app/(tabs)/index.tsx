@@ -159,8 +159,8 @@ export default function ExploreScreen() {
 					</Text>
 				</View>
 				{/* <NotificationList limit={3} /> */}
-				{notifications.map((notification) => (
-					<Notification notification={notification} />
+				{notifications.map((notification, index) => (
+					<Notification notification={notification} key={index} />
 				))}
 			</View>
 		</ScrollView>

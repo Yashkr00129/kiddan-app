@@ -15,25 +15,25 @@ export default function ImageArticle({
 }: {
 	article: ArticleWithPopulatedTopic;
 }) {
-	const windowWidth = Dimensions.get("screen").width;
-	const windowHeight = Dimensions.get("screen").height;
+	const { height } = Dimensions.get("window");
+
 	const openOriginalArticle = async () =>
 		await WebBrowser.openBrowserAsync(article.url);
 
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView>
 			<PagerView
 				orientation={"horizontal"}
 				initialPage={0}
-				style={{ height: windowHeight - 40 }}
+				style={{ height: height - 40 }}
 			>
 				{article.images.map((image, index) => (
 					<View key={index} style={{ width: "100%", height: "100%" }}>
 						<ImageBackground
 							source={{ uri: image }}
 							style={{
-								width: windowWidth,
-								height: windowHeight - 50,
+								width: "100%",
+								height: "100%",
 							}}
 						>
 							<View style={styles.readMoreButtonContainer}>

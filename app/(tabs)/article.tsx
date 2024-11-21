@@ -1,11 +1,11 @@
 import {
-	ActivityIndicator,
 	Dimensions,
 	Platform,
 	SafeAreaView,
-	StyleSheet,
 	View,
 	RefreshControl,
+	FlatList,
+	ViewToken,
 } from "react-native";
 import React, { useCallback, useLayoutEffect, useMemo, useState } from "react";
 import { useLocalSearchParams, usePathname } from "expo-router";
@@ -22,11 +22,7 @@ export default function FeedScreen() {
 	const [loading, setLoading] = useState(true);
 	const [currentIndex, setCurrentIndex] = useState(0);
 
-	const { height, width } = Dimensions.get("screen");
-
-	const handleChangeIndexValue = ({ index }: { index: number }) => {
-		setCurrentIndex(index);
-	};
+	const { height } = Dimensions.get("window");
 
 	const api_url = useMemo(
 		() =>
@@ -36,13 +32,11 @@ export default function FeedScreen() {
 
 	const fetchData = async () => {
 		setLoading(true);
-		console.log(api_url);
 		axios
 			.get(api_url)
 			.then((response) => {
 				if (!params.articleId) {
 					setArticles(response.data);
-					console.log([...response.data].reverse().length);
 				} else {
 					const articles = response.data as ArticleWithPopulatedTopic[];
 					const articleToBeFirstIndex = articles.findIndex(
@@ -66,80 +60,46 @@ export default function FeedScreen() {
 		fetchData();
 	}, [params.topic, params.articleId, pathname]);
 
-	const renderItem = useCallback(
-		({ item: article, index }: any) => (
-			<View
-				style={[
-					{
-						flex: 1,
-					},
-					{ height, width },
-				]}
-			>
-				<Article
-					key={article._id}
-					article={article}
-					index={index}
-					currentIndex={currentIndex}
-				/>
-			</View>
-		),
-		[height, width, currentIndex]
-	);
-
 	if (loading) return <AppLoader />;
 
 	return (
-		<SafeAreaView
-			style={{
-				height: height,
-				width: width,
-			}}
-		>
-			<SwiperFlatList
-				vertical={true}
+		<SafeAreaView>
+			<FlatList
+				data={articles}
+				renderItem={({ item: article, index }: any) => (
+					<Article
+						key={article._id}
+						article={article}
+						index={index}
+						currentIndex={currentIndex}
+					/>
+				)}
+				keyExtractor={(item, index) => `${index}`}
+				removeClippedSubviews={true}
+				snapToInterval={height - 40}
+				getItemLayout={(data, index) => ({
+					length: height - 40,
+					offset: (height - 40) * index,
+					index,
+				})}
+				decelerationRate={"fast"}
+				onViewableItemsChanged={({ changed, viewableItems }) => {
+					if (viewableItems.length > 0) {
+						setCurrentIndex(viewableItems[0].index || 0);
+					}
+				}}
+				initialNumToRender={10}
+				maxToRenderPerBatch={10}
+				windowSize={5}
 				refreshControl={
 					<RefreshControl
 						refreshing={loading}
 						onRefresh={fetchData}
-						tintColor="#000" // iOS
-						colors={["#000"]} // Android
+						tintColor="#000"
+						colors={["#000"]}
 					/>
 				}
-				windowSize={100}
-				initialNumToRender={3}
-				maxToRenderPerBatch={5}
-				removeClippedSubviews={Platform.OS === "android"}
-				onChangeIndex={handleChangeIndexValue}
-				data={articles}
-				snapToInterval={height}
-				decelerationRate="fast"
-				bounces={false}
-				renderItem={renderItem}
-				keyExtractor={(item, index) => `${index}`}
-				viewabilityConfig={{
-					itemVisiblePercentThreshold: 50,
-				}}
-				contentContainerStyle={styles.listContent}
 			/>
 		</SafeAreaView>
 	);
 }
-
-const styles = StyleSheet.create({
-	// container: {
-	// 	flex: ,
-	// },
-	pagerView: {
-		width: "100%",
-		height: "100%",
-	},
-	page: {
-		justifyContent: "center",
-		alignItems: "center",
-	},
-	listContent: {
-		// This ensures the last item is fully scrollable
-		flexGrow: 1,
-	},
-});
