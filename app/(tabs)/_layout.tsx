@@ -5,6 +5,7 @@ import Head from "expo-router/head";
 import axios from "axios";
 import { useEffect } from "react";
 import * as Notifications from "expo-notifications";
+import { Pressable } from "react-native";
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -73,7 +74,9 @@ export default function TabLayout() {
 					options={{
 						title: "Home",
 						tabBarIcon: ({ color }) => (
-							<FontAwesome size={28} name="home" color={color} />
+							<Pressable onPress={() => router.replace("/article")}>
+								<FontAwesome size={28} name="home" color={color} />
+							</Pressable>
 						),
 					}}
 				/>

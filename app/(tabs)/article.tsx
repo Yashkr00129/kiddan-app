@@ -8,14 +8,16 @@ import {
 	RefreshControl,
 } from "react-native";
 import React, { useCallback, useLayoutEffect, useMemo, useState } from "react";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, usePathname } from "expo-router";
 
 import Article from "@/components/Article";
 import axios from "axios";
 import SwiperFlatList from "react-native-swiper-flatlist";
+import AppLoader from "@/components/ui/AppLoader";
 
 export default function FeedScreen() {
 	const params = useLocalSearchParams();
+	const pathname = usePathname();
 	const [articles, setArticles] = useState<ArticleWithPopulatedTopic[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [currentIndex, setCurrentIndex] = useState(0);
@@ -29,11 +31,12 @@ export default function FeedScreen() {
 	const api_url = useMemo(
 		() =>
 			params.topic ? `/api/article?topic=${params.topic}` : "/api/article",
-		[params.topic]
+		[params.topic, pathname]
 	);
 
 	const fetchData = async () => {
 		setLoading(true);
+		console.log(api_url);
 		axios
 			.get(api_url)
 			.then((response) => {
@@ -61,7 +64,7 @@ export default function FeedScreen() {
 
 	useLayoutEffect(() => {
 		fetchData();
-	}, [params.topic, params.articleId]);
+	}, [params.topic, params.articleId, pathname]);
 
 	const renderItem = useCallback(
 		({ item: article, index }: any) => (
@@ -84,7 +87,7 @@ export default function FeedScreen() {
 		[height, width, currentIndex]
 	);
 
-	if (loading) return <ActivityIndicator />;
+	if (loading) return <AppLoader />;
 
 	return (
 		<SafeAreaView
