@@ -1,5 +1,5 @@
 import { useVideoPlayer, VideoPlayer, VideoView } from "expo-video";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
 	Dimensions,
 	Pressable,
@@ -9,7 +9,7 @@ import {
 	View,
 } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { usePathname } from "expo-router";
+import { useFocusEffect, usePathname } from "expo-router";
 import AppButton from "@/components/ui/AppButton";
 import * as WebBrowser from "expo-web-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -31,14 +31,11 @@ export default function VideoArticle({
 	const windowWidth = Dimensions.get("screen").width;
 	const videoRef = useRef(null);
 	const [isPlaying, setIsPlaying] = useState(true);
+
 	const player = useVideoPlayer(videoSource, (player: VideoPlayer) => {
 		player.loop = true;
 		player.muted = true;
-
-		if (index === currentIndex) player.play();
 	});
-
-	const videoArticlePathname = "/article";
 
 	const { height } = Dimensions.get("window");
 
@@ -56,17 +53,18 @@ export default function VideoArticle({
 	}, [player]);
 
 	useEffect(() => {
-		if (pathname !== videoArticlePathname) {
-			player.pause();
-		} else {
-			if (index === currentIndex) player.play();
-		}
+		if (pathname !== "/article") player.pause();
+		else if (index === currentIndex) player.play();
 	}, [pathname]);
 
-	useEffect(() => {
-		if (index === currentIndex) player.play();
-		else player.pause();
-	}, [currentIndex]);
+	useFocusEffect(() => {
+		if (index !== currentIndex) {
+			player.pause();
+		}
+		if (index === currentIndex) {
+			player.play();
+		}
+	});
 
 	const openOriginalArticle = async () =>
 		await WebBrowser.openBrowserAsync(articleUrl);

@@ -60,8 +60,9 @@ export default function FeedScreen() {
 		fetchData();
 	}, [params.topic, params.articleId, pathname]);
 
-	if (loading) return <AppLoader />;
+	console.log(currentIndex);
 
+	if (loading) return <AppLoader />;
 	return (
 		<SafeAreaView>
 			<FlatList
