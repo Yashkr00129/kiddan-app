@@ -73,8 +73,6 @@ export default function VideoArticle({
 	const openOriginalArticle = async () =>
 		await WebBrowser.openBrowserAsync(articleUrl);
 
-	console.log("Window height from video article - ", windowHeight);
-
 	const [muted, setMuted] = useState(true);
 	const [showUnmuteIcon, setShowUnmuteIcon] = useState(false);
 	const [showMutedIcon, setShowMutedIcon] = useState(false);
@@ -163,7 +161,6 @@ export default function VideoArticle({
 							)}
 						</View>
 					)}
-
 					<View style={styles.readMoreButtonContainer}>
 						{articleUrl && (
 							<AppButton

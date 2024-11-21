@@ -15,8 +15,8 @@ Notifications.setNotificationHandler({
 });
 
 export default function TabLayout() {
-	// axios.defaults.baseURL = "https://b7fpgqz9cr.ap-south-1.awsapprunner.com";
-	axios.defaults.baseURL = "http://192.168.60.23:3000/";
+	axios.defaults.baseURL = "https://b7fpgqz9cr.ap-south-1.awsapprunner.com";
+	// axios.defaults.baseURL = "http://192.168.60.23:3000/";
 
 	const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
@@ -33,7 +33,6 @@ export default function TabLayout() {
 	const handlePush = async ({
 		notification,
 	}: Notifications.NotificationResponse) => {
-		console.log(notification);
 		const notificationData = notification.request.content.data;
 
 		if (notificationData.type === "link") {

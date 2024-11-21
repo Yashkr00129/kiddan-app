@@ -5,11 +5,13 @@ import {
 	Text,
 	TouchableOpacity,
 	View,
+	RefreshControl,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "expo-router";
 import { splitByWordCount } from "@/utils/splitByWordCount";
+import Notification from "./Notification";
 
 export default function NotificationList({
 	limit,
@@ -20,16 +22,28 @@ export default function NotificationList({
 }) {
 	const router = useRouter();
 	const [notifications, setNotifications] = useState<DbNotification[]>([]);
+	const [refreshing, setRefreshing] = useState(false);
+
+	const fetchNotifications = async () => {
+		let apiUrl = "/api/notification";
+		if (limit) apiUrl = apiUrl + `?limit=${limit}`;
+
+		const res = await axios.get(apiUrl);
+		setNotifications(res.data);
+	};
 
 	useEffect(() => {
-		const fetchNotifications = async () => {
-			let apiUrl = "/api/notification";
-			if (limit) apiUrl = apiUrl + `?limit=${limit}`;
-
-			const res = await axios.get(apiUrl);
-			setNotifications(res.data);
-		};
 		fetchNotifications();
+	}, []);
+
+	const onRefresh = useCallback(async () => {
+		setRefreshing(true);
+		try {
+			// Do your refresh logic here
+			await fetchNotifications();
+		} finally {
+			setRefreshing(false);
+		}
 	}, []);
 
 	return (
@@ -48,36 +62,18 @@ export default function NotificationList({
 			<FlatList
 				data={notifications}
 				keyExtractor={(item) => item._id}
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+						tintColor="#000" // iOS
+						colors={["#000"]} // Android
+					/>
+				}
 				renderItem={({ item: notification }) => {
 					return (
 						<>
-							<TouchableOpacity
-								onPress={() =>
-									router.push(`/article?articleId=${notification.article._id}`)
-								}
-							>
-								<View style={styles.notificationContainer}>
-									<View style={{ flex: 10 }}>
-										<Text style={styles.notificationText}>
-											{truncateStringByWord(notification.title, 70)}
-										</Text>
-									</View>
-									<View style={{ flex: 2 }}>
-										<Image
-											source={{
-												uri:
-													notification.article.images[0] ||
-													"https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ=",
-											}}
-											style={{
-												width: 60,
-												height: 60,
-												borderRadius: 10,
-											}}
-										/>
-									</View>
-								</View>
-							</TouchableOpacity>
+							<Notification notification={notification} />
 						</>
 					);
 				}}

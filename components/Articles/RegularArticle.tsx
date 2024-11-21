@@ -19,7 +19,6 @@ export default function RegularArticle({
 }: {
 	article: ArticleWithPopulatedTopic;
 }) {
-	console.log(article.contents);
 	// const descriptionList = splitByWordCount(article.description, 70);
 
 	if (article.title.startsWith("")) {

@@ -5,8 +5,9 @@ import {
 	SafeAreaView,
 	StyleSheet,
 	View,
+	RefreshControl,
 } from "react-native";
-import React, { useCallback, useLayoutEffect, useState } from "react";
+import React, { useCallback, useLayoutEffect, useMemo, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 
 import Article from "@/components/Article";
@@ -25,11 +26,13 @@ export default function FeedScreen() {
 		setCurrentIndex(index);
 	};
 
-	useLayoutEffect(() => {
-		const api_url = params.topic
-			? `/api/article?topic=${params.topic}`
-			: "/api/article";
+	const api_url = useMemo(
+		() =>
+			params.topic ? `/api/article?topic=${params.topic}` : "/api/article",
+		[params.topic]
+	);
 
+	const fetchData = async () => {
 		setLoading(true);
 		axios
 			.get(api_url)
@@ -54,6 +57,10 @@ export default function FeedScreen() {
 				console.log(error);
 			})
 			.finally(() => setLoading(false));
+	};
+
+	useLayoutEffect(() => {
+		fetchData();
 	}, [params.topic, params.articleId]);
 
 	const renderItem = useCallback(
@@ -88,6 +95,14 @@ export default function FeedScreen() {
 		>
 			<SwiperFlatList
 				vertical={true}
+				refreshControl={
+					<RefreshControl
+						refreshing={loading}
+						onRefresh={fetchData}
+						tintColor="#000" // iOS
+						colors={["#000"]} // Android
+					/>
+				}
 				windowSize={100}
 				initialNumToRender={3}
 				maxToRenderPerBatch={5}

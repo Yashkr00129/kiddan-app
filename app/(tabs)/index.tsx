@@ -5,6 +5,7 @@ import {
 	ScrollView,
 	TouchableOpacity,
 	Image,
+	RefreshControl,
 } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FeaturedArticle from "@/components/FeaturedArticle";
@@ -15,6 +16,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { router, useNavigation } from "expo-router";
 import AppLoader from "@/components/ui/AppLoader";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Notification from "@/components/Notification";
 
 export default function ExploreScreen() {
 	const navigation = useNavigation();
@@ -23,40 +25,62 @@ export default function ExploreScreen() {
 	const [featuredArticles, setFeaturedArticles] = useState<
 		ArticleWithPopulatedTopic[]
 	>([]);
+	const [notifications, setNotifications] = useState<DbNotification[]>([]);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		navigation.setOptions({ headerShown: false });
 	}, [navigation]);
 
-	useLayoutEffect(() => {
-		const loadAllData = async () => {
-			await axios
-				.get("/api/topic")
-				.then((response) => {
-					setTopics(response.data as Topic[]);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-
-			await axios
-				.get("/api/article?featured=true&limit=10")
-				.then((response) => {
-					setFeaturedArticles(response.data);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		};
+	const loadAllData = async () => {
 		setLoading(true);
-		loadAllData().then(() => setLoading(false));
+		await axios
+			.get("/api/topic")
+			.then((response) => {
+				setTopics(response.data as Topic[]);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+
+		await axios
+			.get("/api/article?featured=true&limit=10")
+			.then((response) => {
+				setFeaturedArticles(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+
+		await axios
+			.get("/api/notification?limit=3")
+			.then((response) => {
+				setNotifications(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+		setLoading(false);
+	};
+
+	useLayoutEffect(() => {
+		loadAllData();
 	}, []);
 
 	if (loading) return <AppLoader />;
 
 	return (
-		<View style={styles.container}>
+		<ScrollView
+			style={styles.container}
+			refreshControl={
+				<RefreshControl
+					refreshing={loading}
+					onRefresh={loadAllData}
+					tintColor="#000" // iOS
+					colors={["#000"]} // Android
+				/>
+			}
+		>
 			<View
 				style={{
 					flexDirection: "row",
@@ -124,9 +148,22 @@ export default function ExploreScreen() {
 			</ScrollView>
 
 			<View>
-				<NotificationList limit={3} />
+				<View style={styles.header}>
+					<Text style={styles.heading}>Latest</Text>
+
+					<Text
+						style={styles.viewButton}
+						onPress={() => router.push("/notification")}
+					>
+						VIEW ALL
+					</Text>
+				</View>
+				{/* <NotificationList limit={3} /> */}
+				{notifications.map((notification) => (
+					<Notification notification={notification} />
+				))}
 			</View>
-		</View>
+		</ScrollView>
 	);
 }
 
@@ -148,6 +185,19 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		fontWeight: "bold",
 
+		color: "purple",
+	},
+	heading: {
+		fontSize: 20,
+		fontWeight: "500",
+		paddingTop: 20,
+		paddingBottom: 10,
+	},
+	viewButton: {
+		fontSize: 14,
+		fontWeight: "bold",
+		paddingTop: 20,
+		paddingBottom: 10,
 		color: "purple",
 	},
 

@@ -15,11 +15,8 @@ export default function Article({
 	index: number;
 	currentIndex: number;
 }) {
-	const windowWidth = Dimensions.get("screen").width;
 	const windowHeight = Dimensions.get("window").height;
 	const bottomTabBarHeight = useBottomTabBarHeight();
-
-	const { bottom, top } = useSafeAreaInsets();
 
 	if (article.type === "Image Carousel")
 		return <ImageArticle article={article} />;
