@@ -14,6 +14,8 @@ import Article from "@/components/Article";
 import axios from "axios";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import AppLoader from "@/components/ui/AppLoader";
+import { articleHeight, articleMargin } from "@/constants/styles";
+import { articleFlatlistRef } from "@/refs/articleFlatlist";
 
 export default function FeedScreen() {
 	const params = useLocalSearchParams();
@@ -66,7 +68,10 @@ export default function FeedScreen() {
 	return (
 		<SafeAreaView>
 			<FlatList
+				ref={articleFlatlistRef}
 				data={articles}
+				directionalLockEnabled={true}
+				nestedScrollEnabled={true}
 				renderItem={({ item: article, index }: any) => (
 					<Article
 						key={article._id}
@@ -77,12 +82,7 @@ export default function FeedScreen() {
 				)}
 				keyExtractor={(item, index) => `${index}`}
 				removeClippedSubviews={true}
-				snapToInterval={height - 40}
-				getItemLayout={(data, index) => ({
-					length: height - 40,
-					offset: (height - 40) * index,
-					index,
-				})}
+				snapToInterval={height}
 				decelerationRate={"fast"}
 				onViewableItemsChanged={({ changed, viewableItems }) => {
 					if (viewableItems.length > 0) {

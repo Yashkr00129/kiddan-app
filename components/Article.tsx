@@ -12,8 +12,6 @@ export default function Article({
 	index: number;
 	currentIndex: number;
 }) {
-	if (article.type === "Image Carousel")
-		return <ImageArticle article={article} />;
 	if (article.type == "Video Carousel")
 		return (
 			<VideoArticle

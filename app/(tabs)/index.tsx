@@ -114,7 +114,12 @@ export default function ExploreScreen() {
 						gap: 5,
 					}}
 				>
-					<Text style={styles.headingSmall}>MY FEED</Text>
+					<Text
+						onPress={() => router.push("/article")}
+						style={styles.headingSmall}
+					>
+						MY FEED
+					</Text>
 					<AntDesign name="arrowright" size={20} color="purple" />
 				</View>
 			</View>

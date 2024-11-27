@@ -13,6 +13,7 @@ import React from "react";
 import * as WebBrowser from "expo-web-browser";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
+import { articleHeight, articleMargin } from "@/constants/styles";
 
 export default function RegularArticle({
 	article,
@@ -35,7 +36,9 @@ export default function RegularArticle({
 	return (
 		<SafeAreaView
 			style={{
-				height: height - 40,
+				height: articleHeight,
+				maxHeight: articleHeight,
+				marginBottom: articleMargin,
 			}}
 		>
 			<Image

@@ -6,6 +6,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import * as Notifications from "expo-notifications";
 import { Pressable } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -43,53 +44,55 @@ export default function TabLayout() {
 
 	return (
 		<>
-			<Head>
-				<title>Kiddaan</title>
-				<meta
-					name="metro"
-					content="<!-- React Native packager is running. -->"
-				/>
-			</Head>
-			<Tabs
-				screenOptions={{
-					tabBarActiveTintColor: "purple",
-					headerShown: false,
-					tabBarStyle: {
-						height: 40,
-					},
-				}}
-			>
-				<Tabs.Screen
-					name="index"
-					options={{
-						title: "Explore",
+			<GestureHandlerRootView>
+				<Head>
+					<title>Kiddaan</title>
+					<meta
+						name="metro"
+						content="<!-- React Native packager is running. -->"
+					/>
+				</Head>
+				<Tabs
+					screenOptions={{
+						tabBarActiveTintColor: "purple",
+						headerShown: false,
+						tabBarStyle: {
+							height: 40,
+						},
+					}}
+				>
+					<Tabs.Screen
+						name="index"
+						options={{
+							title: "Explore",
 
-						tabBarIcon: ({ color }) => (
-							<FontAwesome size={28} name="search" color={color} />
-						),
-					}}
-				/>
-				<Tabs.Screen
-					name="article"
-					options={{
-						title: "Home",
-						tabBarIcon: ({ color }) => (
-							<Pressable onPress={() => router.replace("/article")}>
-								<FontAwesome size={28} name="home" color={color} />
-							</Pressable>
-						),
-					}}
-				/>
-				<Tabs.Screen
-					name="prefrences"
-					options={{
-						title: "Prefrences",
-						tabBarIcon: ({ color }) => (
-							<FontAwesome size={28} name="cog" color={color} />
-						),
-					}}
-				/>
-			</Tabs>
+							tabBarIcon: ({ color }) => (
+								<FontAwesome size={28} name="search" color={color} />
+							),
+						}}
+					/>
+					<Tabs.Screen
+						name="article"
+						options={{
+							title: "Home",
+							tabBarIcon: ({ color }) => (
+								<Pressable onPress={() => router.replace("/article")}>
+									<FontAwesome size={28} name="home" color={color} />
+								</Pressable>
+							),
+						}}
+					/>
+					<Tabs.Screen
+						name="prefrences"
+						options={{
+							title: "Prefrences",
+							tabBarIcon: ({ color }) => (
+								<FontAwesome size={28} name="cog" color={color} />
+							),
+						}}
+					/>
+				</Tabs>
+			</GestureHandlerRootView>
 		</>
 	);
 }

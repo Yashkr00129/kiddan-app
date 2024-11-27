@@ -1,5 +1,11 @@
 import { useVideoPlayer, VideoPlayer, VideoView } from "expo-video";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from "react";
 import {
 	Dimensions,
 	Pressable,
@@ -15,6 +21,7 @@ import * as WebBrowser from "expo-web-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import Octicons from "@expo/vector-icons/Octicons";
+import { articleHeight, articleMargin, tabBarHeight } from "@/constants/styles";
 
 export default function VideoArticle({
 	videoSource,
@@ -28,7 +35,6 @@ export default function VideoArticle({
 	articleUrl?: string;
 }) {
 	const pathname = usePathname();
-	const windowWidth = Dimensions.get("screen").width;
 	const videoRef = useRef(null);
 	const [isPlaying, setIsPlaying] = useState(true);
 
@@ -36,8 +42,6 @@ export default function VideoArticle({
 		player.loop = true;
 		player.muted = true;
 	});
-
-	const { height } = Dimensions.get("window");
 
 	useEffect(() => {
 		const subscription = player.addListener(
@@ -52,19 +56,27 @@ export default function VideoArticle({
 		};
 	}, [player]);
 
+	const handlePause = (input?: string) => {
+		player.pause();
+	};
+
+	const handlePlay = (input?: string) => {
+		console.log("Playing due to", input);
+		if (index !== currentIndex) return;
+		console.log("Index and current index while playing", index, currentIndex);
+		player.play();
+	};
+
 	useEffect(() => {
-		if (pathname !== "/article") player.pause();
-		else if (index === currentIndex) player.play();
+		if (pathname !== "/article") handlePause();
+		else if (index === currentIndex)
+			handlePlay("useEffect that checks the pathname");
 	}, [pathname]);
 
-	useFocusEffect(() => {
-		if (index !== currentIndex) {
-			player.pause();
-		}
-		if (index === currentIndex) {
-			player.play();
-		}
-	});
+	useEffect(() => {
+		if (index !== currentIndex) handlePause();
+		if (index === currentIndex) handlePlay("use effect that checks the index");
+	}, [index, currentIndex]);
 
 	const openOriginalArticle = async () =>
 		await WebBrowser.openBrowserAsync(articleUrl);
@@ -92,21 +104,16 @@ export default function VideoArticle({
 
 	return (
 		<Pressable
-			style={{
-				width: "100%",
-				position: "relative",
-			}}
-			onLongPress={() => player.pause()}
+			onLongPress={() => handlePause("longpress")}
 			onPress={() => {
 				setMuted(!muted);
 			}}
-			onPressOut={() => player.play()}
 		>
 			<View
 				style={[
 					{
 						width: "100%",
-						height: height - 40,
+						height: articleHeight,
 						zIndex: 10,
 						position: "absolute",
 						top: 0,
@@ -119,7 +126,14 @@ export default function VideoArticle({
 				]}
 			>
 				{!isPlaying && (
-					<MaterialCommunityIcons name="play" size={80} color="white" />
+					<Pressable
+						onPress={() => {
+							console.log("pressed play button");
+							handlePlay();
+						}}
+					>
+						<MaterialCommunityIcons name="play" size={80} color="white" />
+					</Pressable>
 				)}
 				{(showMutedIcon || showUnmuteIcon) && (
 					<View
@@ -161,9 +175,9 @@ export default function VideoArticle({
 			<VideoView
 				ref={videoRef}
 				style={{
-					width: windowWidth,
-					height: height - 40,
-					position: "relative",
+					width: "100%",
+					height: articleHeight,
+					marginBottom: articleMargin,
 				}}
 				contentFit="cover"
 				player={player}
