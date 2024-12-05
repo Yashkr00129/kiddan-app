@@ -16,10 +16,6 @@
 			"supportsTablet": true
 		},
 		"android": {
-			"adaptiveIcon": {
-				"foregroundImage": "./assets/images/adaptive-icon.png",
-				"backgroundColor": "#ffffff"
-			},
 			"package": "com.yashkr00129.kiddannews",
 			"versionCode": 2,
 			"googleServicesFile": "./google-services.json"
