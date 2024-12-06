@@ -1,6 +1,7 @@
 import {
 	Dimensions,
 	Image,
+	Modal,
 	SafeAreaView,
 	StyleSheet,
 	Text,
@@ -14,6 +15,7 @@ import * as WebBrowser from "expo-web-browser";
 import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { articleHeight, articleMargin } from "@/constants/styles";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function RegularArticle({
 	article,
@@ -56,18 +58,32 @@ export default function RegularArticle({
 			</View>
 
 			<View style={{ padding: 20, paddingBottom: 0 }}>
-				<View style={{ flexDirection: "row", gap: 10, marginVertical: 10 }}>
-					<AppText
-						style={{ color: "purple", fontSize: 13, fontWeight: "semibold" }}
-					>
-						{new Date(article.createdAt).toDateString()}
-					</AppText>
+				<View
+					style={{
+						flexDirection: "row",
+						gap: 10,
+						marginVertical: 10,
+						justifyContent: "space-between",
+					}}
+				>
+					<View style={{ flexDirection: "row", gap: 10 }}>
+						<AppText
+							style={{ color: "purple", fontSize: 13, fontWeight: "semibold" }}
+						>
+							{new Date(article.createdAt).toDateString()}
+						</AppText>
 
-					<AppText
-						style={{ color: "purple", fontSize: 13, fontWeight: "semibold" }}
-					>
-						{new Date(article.createdAt).toLocaleTimeString()}
-					</AppText>
+						<AppText
+							style={{ color: "purple", fontSize: 13, fontWeight: "semibold" }}
+						>
+							{new Date(article.createdAt).toLocaleTimeString()}
+						</AppText>
+					</View>
+					<MaterialCommunityIcons
+						name="share-variant"
+						size={24}
+						color="purple"
+					/>
 				</View>
 				<Text style={styles.heading}>{article.title}</Text>
 				{article.contents && article.contents.length === 1 ? (

@@ -35,7 +35,7 @@ export default function ExploreScreen() {
 	const loadAllData = async () => {
 		setLoading(true);
 		await axios
-			.get("/api/topic")
+			.get("/api/topic?featured=true")
 			.then((response) => {
 				setTopics(response.data as Topic[]);
 			})
@@ -134,8 +134,16 @@ export default function ExploreScreen() {
 				))}
 			</ScrollView>
 
-			<View>
+			<View style={styles.topicSectionHeadingContainer}>
 				<Text style={styles.topicSectionHeading}>Filter By Topics</Text>
+				<View style={{}}>
+					<Text
+						onPress={() => router.push("/topics")}
+						style={styles.headingSmall}
+					>
+						VIEW ALL
+					</Text>
+				</View>
 			</View>
 			<ScrollView
 				style={styles.topics}
@@ -209,8 +217,14 @@ const styles = StyleSheet.create({
 	topicSectionHeading: {
 		fontSize: 20,
 		fontWeight: "500",
-		paddingTop: 20,
+	},
+	topicSectionHeadingContainer: {
+		marginTop: 20,
 		paddingBottom: 10,
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		gap: 5,
 	},
 	topics: {
 		flexDirection: "row",
