@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	image: {
-		width: 70,
-		height: 70,
+		width: 45,
+		height: 45,
 		borderRadius: 35,
 	},
 	subTitle: {

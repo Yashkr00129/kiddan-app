@@ -10,6 +10,7 @@ type ArticleWithPopulatedTopic = {
 	title: string;
 	images: string[];
 	thumbnail: string;
+	previewImage: string;
 	topics: Topic[];
 	description: string;
 	contents: string[];

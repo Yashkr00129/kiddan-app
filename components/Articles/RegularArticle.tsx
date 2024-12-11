@@ -7,6 +7,7 @@ import {
 	Text,
 	TouchableOpacity,
 	View,
+	Share
 } from "react-native";
 import { SwiperFlatList } from "react-native-swiper-flatlist";
 import React from "react";
@@ -16,6 +17,36 @@ import AppText from "@/components/ui/AppText";
 import AppButton from "@/components/ui/AppButton";
 import { articleHeight, articleMargin } from "@/constants/styles";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+
+import * as FileSystem from 'expo-file-system';
+
+const handleShare = async (article: ArticleWithPopulatedTopic) => {
+	try {
+		// First, download the image
+		const filename = article.previewImage.split('/').pop();
+		const filepath = `${FileSystem.cacheDirectory}${filename}`;
+
+		// Download the image to local cache
+		await FileSystem.downloadAsync(article.previewImage, filepath);
+
+		// Generate the article URL
+		const articleUrl = `yourapp://article?articleId=${article._id}`;
+
+		// const shareOptions = {
+		// 	title: article.title,
+		// 	message: `${article.title}\n\n${articleUrl}`,
+		// 	url: `file://${filepath}`, // Convert filepath to file URL
+		// 	type: 'image/jpeg', // Adjust based on your image type
+		// 	social: Share.Social.WHATSAPP // Optional: specify social platform
+		// };
+
+		// await Share.open(shareOptions);
+
+	} catch (error) {
+		console.error('Error sharing:', error);
+	}
+}
+
 
 export default function RegularArticle({
 	article,
@@ -80,6 +111,7 @@ export default function RegularArticle({
 						</AppText>
 					</View>
 					<MaterialCommunityIcons
+						onPress={() => handleShare(article)}
 						name="share-variant"
 						size={24}
 						color="purple"
