@@ -1,13 +1,11 @@
 import {
 	Dimensions,
 	Image,
-	Modal,
 	SafeAreaView,
 	StyleSheet,
 	Text,
 	TouchableOpacity,
 	View,
-	Share
 } from "react-native";
 import { SwiperFlatList } from "react-native-swiper-flatlist";
 import React from "react";
@@ -19,6 +17,8 @@ import { articleHeight, articleMargin } from "@/constants/styles";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import * as FileSystem from 'expo-file-system';
+import Share from "react-native-share"
+
 
 const handleShare = async (article: ArticleWithPopulatedTopic) => {
 	try {
@@ -31,16 +31,17 @@ const handleShare = async (article: ArticleWithPopulatedTopic) => {
 
 		// Generate the article URL
 		const articleUrl = `yourapp://article?articleId=${article._id}`;
+		const shareOptions = {
 
-		// const shareOptions = {
-		// 	title: article.title,
-		// 	message: `${article.title}\n\n${articleUrl}`,
-		// 	url: `file://${filepath}`, // Convert filepath to file URL
-		// 	type: 'image/jpeg', // Adjust based on your image type
-		// 	social: Share.Social.WHATSAPP // Optional: specify social platform
-		// };
+		}
 
-		// await Share.open(shareOptions);
+		Share.open({
+			url: filepath,
+			title: article.title,
+			message: article.title,
+		})
+
+
 
 	} catch (error) {
 		console.error('Error sharing:', error);
