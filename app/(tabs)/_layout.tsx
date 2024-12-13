@@ -26,7 +26,7 @@ export default function TabLayout() {
 		if (
 			lastNotificationResponse &&
 			lastNotificationResponse.actionIdentifier ===
-				Notifications.DEFAULT_ACTION_IDENTIFIER
+			Notifications.DEFAULT_ACTION_IDENTIFIER
 		) {
 			handlePush(lastNotificationResponse);
 		}
@@ -72,11 +72,11 @@ export default function TabLayout() {
 						}}
 					/>
 					<Tabs.Screen
-						name="article"
+						name="articles"
 						options={{
 							title: "Home",
 							tabBarIcon: ({ color }) => (
-								<Pressable onPress={() => router.replace("/article")}>
+								<Pressable onPress={() => router.replace("/articles")}>
 									<FontAwesome size={28} name="home" color={color} />
 								</Pressable>
 							),

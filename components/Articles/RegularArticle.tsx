@@ -17,6 +17,7 @@ import { articleHeight, articleMargin } from "@/constants/styles";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import * as FileSystem from 'expo-file-system';
+import * as Linking from "expo-linking"
 import Share from "react-native-share"
 
 
@@ -28,17 +29,13 @@ const handleShare = async (article: ArticleWithPopulatedTopic) => {
 
 		// Download the image to local cache
 		await FileSystem.downloadAsync(article.previewImage, filepath);
+		const url = "https://kiddaanapp.com" + '/articles?articleId=' + article._id
 
 		// Generate the article URL
-		const articleUrl = `yourapp://article?articleId=${article._id}`;
-		const shareOptions = {
-
-		}
-
 		Share.open({
 			url: filepath,
-			title: article.title,
-			message: article.title,
+			title: `${article.title} \n ${url}`,
+			message: `${article.title} \n ${url}`,
 		})
 
 

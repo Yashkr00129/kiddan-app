@@ -47,7 +47,7 @@ export default function topics() {
 						<ListItem
 							title={topic.title}
 							image={{ uri: topic.image }}
-							onPress={() => router.push(`/article?topic=${topic._id}`)}
+							onPress={() => router.push(`/articles?topic=${topic._id}`)}
 						/>
 					)}
 				/>

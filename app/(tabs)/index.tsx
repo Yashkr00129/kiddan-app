@@ -115,7 +115,7 @@ export default function ExploreScreen() {
 					}}
 				>
 					<Text
-						onPress={() => router.push("/article")}
+						onPress={() => router.push("/articles")}
 						style={styles.headingSmall}
 					>
 						MY FEED
@@ -153,7 +153,7 @@ export default function ExploreScreen() {
 				{topics.map((topic) => (
 					<TouchableOpacity
 						key={topic._id}
-						onPress={() => router.push(`/article?topic=${topic._id}`)}
+						onPress={() => router.push(`/articles?topic=${topic._id}`)}
 					>
 						<Topic image={topic.image} title={topic.title} />
 					</TouchableOpacity>

@@ -68,7 +68,7 @@ export default function VideoArticle({
 	};
 
 	useEffect(() => {
-		if (pathname !== "/article") handlePause();
+		if (pathname !== "/articles") handlePause();
 		else if (index === currentIndex)
 			handlePlay("useEffect that checks the pathname");
 	}, [pathname]);

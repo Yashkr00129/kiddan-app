@@ -5,7 +5,7 @@
 		"version": "2.0.0",
 		"orientation": "portrait",
 		"icon": "./assets/images/kiddan_app_logo_android.jpg",
-		"scheme": "myapp",
+		"scheme": "kiddaanapp",
 		"userInterfaceStyle": "automatic",
 		"splash": {
 			"image": "./assets/images/splash.png",
@@ -18,7 +18,21 @@
 		"android": {
 			"package": "com.yashkr00129.kiddannews",
 			"versionCode": 2,
-			"googleServicesFile": "./google-services.json"
+			"googleServicesFile": "./google-services.json",
+			"intentFilters": [
+				{
+					"action": "VIEW",
+					"autoVerify": true,
+					"data": [
+						{
+							"scheme": "https",
+							"host": "*.kiddaanapp.com",
+							"pathPrefix": "/articles"
+						}
+					],
+					"category": ["BROWSABLE", "DEFAULT"]
+				}
+			]
 		},
 		"web": {
 			"bundler": "metro",

@@ -8,7 +8,7 @@ const Notification = ({ notification }: { notification: DbNotification }) => {
 	return (
 		<TouchableOpacity
 			onPress={() =>
-				router.push(`/article?articleId=${notification.article._id}`)
+				router.push(`/articles?articleId=${notification.article._id}`)
 			}
 		>
 			<View style={styles.notificationContainer}>
