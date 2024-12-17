@@ -26,7 +26,7 @@
 					"data": [
 						{
 							"scheme": "https",
-							"host": "*.kiddaanapp.com",
+							"host": "www.kiddaanapp.com",
 							"pathPrefix": "/articles"
 						}
 					],

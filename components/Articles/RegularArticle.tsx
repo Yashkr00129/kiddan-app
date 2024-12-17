@@ -16,35 +16,31 @@ import AppButton from "@/components/ui/AppButton";
 import { articleHeight, articleMargin } from "@/constants/styles";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-import * as FileSystem from 'expo-file-system';
-import * as Linking from "expo-linking"
-import Share from "react-native-share"
-
+import * as FileSystem from "expo-file-system";
+import * as Linking from "expo-linking";
+import Share from "react-native-share";
 
 const handleShare = async (article: ArticleWithPopulatedTopic) => {
 	try {
 		// First, download the image
-		const filename = article.previewImage.split('/').pop();
+		const filename = article.previewImage.split("/").pop();
 		const filepath = `${FileSystem.cacheDirectory}${filename}`;
 
 		// Download the image to local cache
 		await FileSystem.downloadAsync(article.previewImage, filepath);
-		const url = "https://kiddaanapp.com" + '/articles?articleId=' + article._id
+		const url =
+			"https://www.kiddaanapp.com" + "/articles?articleId=" + article._id;
 
 		// Generate the article URL
 		Share.open({
 			url: filepath,
 			title: `${article.title} \n ${url}`,
 			message: `${article.title} \n ${url}`,
-		})
-
-
-
+		});
 	} catch (error) {
-		console.error('Error sharing:', error);
+		console.error("Error sharing:", error);
 	}
-}
-
+};
 
 export default function RegularArticle({
 	article,
