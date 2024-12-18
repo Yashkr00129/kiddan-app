@@ -23,6 +23,7 @@ export default function PrefrencesPage() {
 
 	async function handlePushNotificationRegistration() {
 		let token = await getExistingPushToken();
+		console.log(token);
 
 		setDisabled(true);
 

@@ -1,6 +1,9 @@
 import {
+	ActivityIndicator,
 	Dimensions,
 	Image,
+	Modal,
+	Pressable,
 	SafeAreaView,
 	StyleSheet,
 	Text,
@@ -8,50 +11,24 @@ import {
 	View,
 } from "react-native";
 import { SwiperFlatList } from "react-native-swiper-flatlist";
-import React from "react";
+import React, { useState } from "react";
 
 import * as WebBrowser from "expo-web-browser";
 import AppText from "@/components/ui/AppText";
-import AppButton from "@/components/ui/AppButton";
 import { articleHeight, articleMargin } from "@/constants/styles";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import * as FileSystem from "expo-file-system";
-import * as Linking from "expo-linking";
+
 import Share from "react-native-share";
-
-const handleShare = async (article: ArticleWithPopulatedTopic) => {
-	try {
-		// First, download the image
-		const filename = article.previewImage.split("/").pop();
-		const filepath = `${FileSystem.cacheDirectory}${filename}`;
-
-		// Download the image to local cache
-		await FileSystem.downloadAsync(article.previewImage, filepath);
-		const url =
-			"https://www.kiddaanapp.com" + "/articles?articleId=" + article._id;
-
-		// Generate the article URL
-		Share.open({
-			url: filepath,
-			title: `${article.title} \n ${url}`,
-			message: `${article.title} \n ${url}`,
-		});
-	} catch (error) {
-		console.error("Error sharing:", error);
-	}
-};
 
 export default function RegularArticle({
 	article,
 }: {
 	article: ArticleWithPopulatedTopic;
 }) {
-	const { height } = Dimensions.get("window");
-	// const descriptionList = splitByWordCount(article.description, 70);
-
-	if (article.title.startsWith("")) {
-	}
+	const [downloadingShareFile, setDownloadingShareFile] = useState(false);
+	const [showModal, setShowModal] = useState(false);
 
 	const openOriginalArticle = async () =>
 		await WebBrowser.openBrowserAsync(article.url);
@@ -60,87 +37,156 @@ export default function RegularArticle({
 		await WebBrowser.openBrowserAsync("http://kiddaan.com");
 	};
 
-	return (
-		<SafeAreaView
-			style={{
-				height: articleHeight,
-				maxHeight: articleHeight,
-				marginBottom: articleMargin,
-			}}
-		>
-			<Image
-				source={{
-					uri: article.images[0],
-				}}
-				style={styles.image}
-			/>
-			<View style={styles.brandingContainer}>
-				<TouchableOpacity onPress={openKiddaan}>
-					<View style={styles.branding}>
-						<Text style={styles.brandingText}>Kiddaan</Text>
-					</View>
-				</TouchableOpacity>
-			</View>
+	const openModal = () => setShowModal(true);
+	const closeModal = () => setShowModal(false);
 
-			<View style={{ padding: 20, paddingBottom: 0 }}>
+	const handleShare = async (article: ArticleWithPopulatedTopic) => {
+		try {
+			const filename = article.previewImage.split("/").pop();
+			const filepath = `${FileSystem.cacheDirectory}${filename}`;
+
+			setDownloadingShareFile(true);
+
+			await FileSystem.downloadAsync(article.previewImage, filepath);
+			const url =
+				"https://www.kiddaanapp.com" + "/articles?articleId=" + article._id;
+
+			Share.open({
+				url: filepath,
+				title: `${url}`,
+				message: `${url}`,
+			});
+		} catch (error) {
+			console.error("Error sharing:", error);
+		} finally {
+			setDownloadingShareFile(false);
+		}
+	};
+
+	return (
+		<Pressable onPress={openModal}>
+			{downloadingShareFile && (
 				<View
 					style={{
-						flexDirection: "row",
-						gap: 10,
-						marginVertical: 10,
-						justifyContent: "space-between",
+						backgroundColor: "black",
+						flex: 1,
+						justifyContent: "center",
+						alignItems: "center",
+						position: "absolute",
+						top: 0,
+						left: 0,
+						width: "100%",
+						height: "100%",
+						zIndex: 10,
+						opacity: 0.5,
 					}}
 				>
-					<View style={{ flexDirection: "row", gap: 10 }}>
-						<AppText
-							style={{ color: "purple", fontSize: 13, fontWeight: "semibold" }}
-						>
-							{new Date(article.createdAt).toDateString()}
-						</AppText>
-
-						<AppText
-							style={{ color: "purple", fontSize: 13, fontWeight: "semibold" }}
-						>
-							{new Date(article.createdAt).toLocaleTimeString()}
-						</AppText>
-					</View>
-					<MaterialCommunityIcons
-						onPress={() => handleShare(article)}
-						name="share-variant"
-						size={24}
-						color="purple"
-					/>
-				</View>
-				<Text style={styles.heading}>{article.title}</Text>
-				{article.contents && article.contents.length === 1 ? (
-					<Text style={styles.articleText}>{article.contents[0]}</Text>
-				) : (
-					<SwiperFlatList
-						// index={1}
-						showPagination
-						paginationStyleItem={{ width: 10, height: 10, marginTop: 30 }}
-						paginationStyleItemActive={{ backgroundColor: "purple" }}
-						data={article.contents}
-						renderItem={({ item: text }) => (
-							<View style={styles.swiperFlatlistChild}>
-								<Text style={styles.articleText}>{text}</Text>
-							</View>
-						)}
-					/>
-				)}
-			</View>
-			{article.url && (
-				<View style={styles.readMoreButtonContainer}>
-					<AppButton
-						title="Read More"
-						style={{
-							backgroundColor: "purple",
-						}}
-						onPress={openOriginalArticle}
-					/>
+					<ActivityIndicator size="large" color="purple" />
 				</View>
 			)}
-		</SafeAreaView>
+			<SafeAreaView
+				style={{
+					height: articleHeight,
+					maxHeight: articleHeight,
+					marginBottom: articleMargin,
+				}}
+			>
+				<Modal
+					visible={showModal}
+					onRequestClose={closeModal}
+					transparent={true}
+					animationType="fade"
+				>
+					<View style={styles.otherOptionsContainer}>
+						<TouchableOpacity onPress={() => handleShare(article)}>
+							<View style={styles.otherOptionsButton}>
+								<MaterialCommunityIcons
+									name="share-variant"
+									size={24}
+									color="purple"
+								/>
+								<Text>Share</Text>
+							</View>
+						</TouchableOpacity>
+						{article.url && (
+							<TouchableOpacity onPress={openOriginalArticle}>
+								<View style={styles.otherOptionsButton}>
+									<MaterialCommunityIcons
+										name="more"
+										size={24}
+										color="purple"
+									/>
+									<Text>Read More</Text>
+								</View>
+							</TouchableOpacity>
+						)}
+					</View>
+				</Modal>
+				<Image
+					source={{
+						uri: article.images[0],
+					}}
+					style={styles.image}
+				/>
+				<View style={styles.brandingContainer}>
+					<TouchableOpacity onPress={openKiddaan}>
+						<View style={styles.branding}>
+							<Text style={styles.brandingText}>Kiddaan</Text>
+						</View>
+					</TouchableOpacity>
+				</View>
+
+				<View style={{ padding: 20, paddingBottom: 0 }}>
+					<View
+						style={{
+							flexDirection: "row",
+							gap: 10,
+							marginVertical: 10,
+							justifyContent: "space-between",
+						}}
+					>
+						<View style={{ flexDirection: "row", gap: 10 }}>
+							<AppText
+								style={{
+									color: "purple",
+									fontSize: 13,
+									fontWeight: "semibold",
+								}}
+							>
+								{new Date(article.createdAt).toDateString()}
+							</AppText>
+
+							<AppText
+								style={{
+									color: "purple",
+									fontSize: 13,
+									fontWeight: "semibold",
+								}}
+							>
+								{new Date(article.createdAt).toLocaleTimeString()}
+							</AppText>
+						</View>
+					</View>
+					<Text style={styles.heading}>{article.title}</Text>
+					{article.contents && article.contents.length === 1 ? (
+						<Text style={styles.articleText}>{article.contents[0]}</Text>
+					) : (
+						<SwiperFlatList
+							// index={1}
+							showPagination
+							paginationStyleItem={{ width: 10, height: 10, marginTop: 30 }}
+							paginationStyleItemActive={{ backgroundColor: "purple" }}
+							data={article.contents}
+							renderItem={({ item: text }) => (
+								<View style={styles.swiperFlatlistChild}>
+									<Text style={styles.articleText}>{text}</Text>
+								</View>
+							)}
+						/>
+					)}
+				</View>
+			</SafeAreaView>
+		</Pressable>
 	);
 }
 
@@ -187,6 +233,29 @@ const styles = StyleSheet.create({
 		padding: 5,
 		paddingHorizontal: 10,
 		borderRadius: 15,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	otherOptionsContainer: {
+		height: 70,
+		width: "100%",
+		position: "absolute",
+		bottom: 0,
+		backgroundColor: "white",
+		justifyContent: "center",
+		alignItems: "center",
+		flexDirection: "row",
+		gap: 20,
+	},
+	otherOptionsButton: {
+		paddingHorizontal: 10,
+		paddingVertical: 5,
+		borderWidth: 1,
+		borderColor: "purple",
+		borderRadius: 10,
+		backgroundColor: "white",
+		flexDirection: "row",
+		gap: 10,
 		justifyContent: "center",
 		alignItems: "center",
 	},

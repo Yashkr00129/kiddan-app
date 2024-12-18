@@ -81,6 +81,7 @@ export default function ExploreScreen() {
 				/>
 			}
 		>
+			{/* Branding Container */}
 			<View
 				style={{
 					flexDirection: "row",
@@ -89,24 +90,14 @@ export default function ExploreScreen() {
 					gap: 10,
 				}}
 			>
-				<View
+				<Image
+					source={require("@/assets/images/logo.png")}
 					style={{
-						flexDirection: "row",
-						alignItems: "center",
-						gap: 10,
+						height: 45,
+						width: 100,
+						objectFit: "contain",
 					}}
-				>
-					<Image
-						source={require("@/assets/images/kiddaan_app_logo.jpg")}
-						style={{
-							height: 30,
-							width: 30,
-						}}
-					/>
-					<Text style={[styles.headingLarge, { color: "purple" }]}>
-						Kiddaan
-					</Text>
-				</View>
+				/>
 				<View
 					style={{
 						flexDirection: "row",
@@ -127,7 +118,7 @@ export default function ExploreScreen() {
 			<ScrollView
 				horizontal
 				showsHorizontalScrollIndicator={false}
-				style={{ paddingTop: 20 }}
+				style={{ paddingTop: 10 }}
 			>
 				{featuredArticles.map((article, index) => (
 					<FeaturedArticle key={index} article={article} />
@@ -183,7 +174,6 @@ export default function ExploreScreen() {
 const styles = StyleSheet.create({
 	container: {
 		padding: 10,
-		paddingTop: 20,
 	},
 	header: {
 		flexDirection: "row",

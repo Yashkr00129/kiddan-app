@@ -1,5 +1,11 @@
-import {ImageBackground, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {router} from "expo-router";
+import {
+	ImageBackground,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+} from "react-native";
+import { router } from "expo-router";
 
 const FeaturedArticle = ({
 	article,
@@ -7,40 +13,41 @@ const FeaturedArticle = ({
 	article: ArticleWithPopulatedTopic;
 }) => {
 	return (
-		<TouchableOpacity onPress={() => router.push(`/article?articleId=${article._id}`)}>
-
-		<ImageBackground
-			blurRadius={2}
-			imageStyle={{
-				borderRadius: 10,
-			}}
-			source={{
-				uri: article.thumbnail,
-			}}
-			style={{ marginRight: 10 }}
+		<TouchableOpacity
+			onPress={() => router.push(`/articles?articleId=${article._id}`)}
 		>
-			<View style={styles.container}>
-				<View>
-					<View
-						style={{
-							backgroundColor: "purple",
-							padding: 5,
-							paddingHorizontal: 10,
-							borderRadius: 5,
-						}}
-					>
-						<Text
+			<ImageBackground
+				blurRadius={2}
+				imageStyle={{
+					borderRadius: 10,
+				}}
+				source={{
+					uri: article.thumbnail,
+				}}
+				style={{ marginRight: 10 }}
+			>
+				<View style={styles.container}>
+					<View>
+						<View
 							style={{
-								color: "white",
+								backgroundColor: "purple",
+								padding: 5,
+								paddingHorizontal: 10,
+								borderRadius: 5,
 							}}
 						>
-							{article.topics[0]?.title || ""}
-						</Text>
+							<Text
+								style={{
+									color: "white",
+								}}
+							>
+								{article.topics[0]?.title || ""}
+							</Text>
+						</View>
 					</View>
+					<Text style={styles.title}>{article.title}</Text>
 				</View>
-				<Text style={styles.title}>{article.title}</Text>
-			</View>
-		</ImageBackground>
+			</ImageBackground>
 		</TouchableOpacity>
 	);
 };
