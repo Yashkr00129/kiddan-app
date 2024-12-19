@@ -19,7 +19,7 @@ export default function PrefrencesPage() {
 	const [enableNotifications, setNotificationsEnabled] = useState(false);
 	const [disabled, setDisabled] = useState(false);
 
-	// enableNotifications should be set to true in a useEffect if the user  has already enabled notifications
+	// enableNotifications should be set to true in a useEffect if the user has already enabled notifications
 
 	async function handlePushNotificationRegistration() {
 		let token = await getExistingPushToken();

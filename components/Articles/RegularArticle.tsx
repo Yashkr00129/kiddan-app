@@ -53,8 +53,8 @@ export default function RegularArticle({
 
 			Share.open({
 				url: filepath,
-				title: `${url}`,
-				message: `${url}`,
+				title: `${article.title} \nRead More - ${url}`,
+				message: `${article.title} \nRead More - ${url}`,
 			});
 		} catch (error) {
 			console.error("Error sharing:", error);
@@ -64,7 +64,7 @@ export default function RegularArticle({
 	};
 
 	return (
-		<Pressable onPress={openModal}>
+		<Pressable onPress={showModal ? closeModal : openModal}>
 			{downloadingShareFile && (
 				<View
 					style={{
@@ -97,6 +97,10 @@ export default function RegularArticle({
 					transparent={true}
 					animationType="fade"
 				>
+					<Pressable
+						onPress={showModal ? closeModal : openModal}
+						style={{ flex: 1 }}
+					/>
 					<View style={styles.otherOptionsContainer}>
 						<TouchableOpacity onPress={() => handleShare(article)}>
 							<View style={styles.otherOptionsButton}>
@@ -128,14 +132,6 @@ export default function RegularArticle({
 					}}
 					style={styles.image}
 				/>
-				<View style={styles.brandingContainer}>
-					<TouchableOpacity onPress={openKiddaan}>
-						<View style={styles.branding}>
-							<Text style={styles.brandingText}>Kiddaan</Text>
-						</View>
-					</TouchableOpacity>
-				</View>
-
 				<View style={{ padding: 20, paddingBottom: 0 }}>
 					<View
 						style={{
@@ -143,6 +139,7 @@ export default function RegularArticle({
 							gap: 10,
 							marginVertical: 10,
 							justifyContent: "space-between",
+							alignItems: "center",
 						}}
 					>
 						<View style={{ flexDirection: "row", gap: 10 }}>
@@ -166,13 +163,18 @@ export default function RegularArticle({
 								{new Date(article.createdAt).toLocaleTimeString()}
 							</AppText>
 						</View>
+						<TouchableOpacity onPress={openKiddaan}>
+							<Image
+								source={require("@/assets/images/logo.png")}
+								style={{ width: 100, height: 30, objectFit: "contain" }}
+							/>
+						</TouchableOpacity>
 					</View>
 					<Text style={styles.heading}>{article.title}</Text>
 					{article.contents && article.contents.length === 1 ? (
 						<Text style={styles.articleText}>{article.contents[0]}</Text>
 					) : (
 						<SwiperFlatList
-							// index={1}
 							showPagination
 							paginationStyleItem={{ width: 10, height: 10, marginTop: 30 }}
 							paginationStyleItemActive={{ backgroundColor: "purple" }}
