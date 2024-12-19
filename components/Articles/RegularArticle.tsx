@@ -138,6 +138,7 @@ export default function RegularArticle({
 							flexDirection: "row",
 							gap: 10,
 							marginVertical: 10,
+							marginTop: 0,
 							justifyContent: "space-between",
 							alignItems: "center",
 						}}
